@@ -5,7 +5,7 @@ import {
   NavParams,
   MenuController */
 } from "ionic-angular";
-import { DataProvider } from './../../providers/data';
+// import { DataProvider } from './../../providers/data';
 
 @IonicPage(
   {
@@ -19,9 +19,8 @@ import { DataProvider } from './../../providers/data';
 })
 export class HomePage {
   small: boolean;
-  constructor(private dataS: DataProvider)
+  constructor()
   {}
   ionViewDidLoad(){
-    this.small = this.dataS.isSmallDevice();
    }
 }

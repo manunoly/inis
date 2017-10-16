@@ -1,5 +1,5 @@
 <ion-menu side="right" [content]="content">
-  <ion-header style="background-color:#1da1f4">
+  <ion-header style="background-color:#8B193D">
     <ion-toolbar>
       <ion-title text-center>Menu</ion-title>
     </ion-toolbar>
@@ -40,6 +40,6 @@
   </ion-content>
 </ion-menu>
 <ion-fab right top>
-  <button [attr.mini]="small ? '' : null" ion-fab color="primary" menuToggle><ion-icon name="menu"></ion-icon></button>
+  <button mini ion-fab style="background-color: #C63D6B" menuToggle><ion-icon name="menu"></ion-icon></button>
 </ion-fab>
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
