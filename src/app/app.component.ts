@@ -21,53 +21,31 @@ export class MyApp {
     displayName = "Visitante";
   picture = "assets/icon/favicon.ico";
   userProfile: any;
-  rootPage: any = "NavegarPage";
+  rootPage: any = "HomePage";
+  // rootPage: any = "NavegarPage";
   small: boolean = true;
   // rootPage:any = HomePage;
   @ViewChild(Nav) nav: Nav;
-
-  pages: PageInterface[] = [
+  user = {roll:"cliente", name:"Andres Iniesta", id:12};
+  driver = {roll:"chofer", name:"Marc Andre T", id:11};
+  clientPages: PageInterface[] = [
     {
       title: "Inicio",
-      pageName: "NavegarPage",
-      tabComponent: "HomePage",
-      index: 0,
+      pageName: "HomePage",
+      icon: "home",
+      fav: false
+    }, { title: "Solicitar Carrera", pageName: "RaceRequestPage", icon: "car", fav: false },
+    { title: "Mis Solicitudes", pageName: "ListRaceServicePage", icon: "calendar", fav: false }
+  ];
+
+    driverPages: PageInterface[] = [
+    {
+      title: "Inicio",
+      pageName: "HomePage",
       icon: "home",
       fav: false
     },
-    {
-      title: "Conferencias",
-      pageName: "NavegarPage",
-      tabComponent: "ConferencePage",
-      index: 1,
-      icon: "calendar",
-      fav: false
-    },
-    { title: "Temas", pageName: "TopicPage", icon: "school", fav: false },
-    {
-      title: "Ponentes",
-      pageName: "NavegarPage",
-      tabComponent: "speakerPage",
-      index: 2,
-      icon: "contacts",
-      fav: false
-    },
-    {
-      title: "Nosotros",
-      pageName: "NavegarPage",
-      tabComponent: "AboutPage",
-      index: 3,
-      icon: "information-circle",
-      fav: false
-    },
-    {
-      title: "Mi Calendario",
-      pageName: "NavegarPage",
-      tabComponent: "ConferencePage",
-      index: 1,
-      icon: "book",
-      fav: true
-    }
+    { title: "Mis Carreras", pageName: "ListRacePage", icon: "calendar", fav: false }
   ];
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
@@ -102,7 +80,8 @@ export class MyApp {
       // Tabs are not active, so reset the root page
       // In this case: moving to or from SpecialPage
       if (page.pageName) this.nav.setRoot(page.pageName, params);
-      else this.nav.setRoot("NavegarPage");
+      else this.nav.setRoot("HomePage");
+      // else this.nav.setRoot("NavegarPage");
     }
   }
 

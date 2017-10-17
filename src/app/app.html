@@ -12,7 +12,7 @@
         <ion-avatar class="profilepicsize">
           <img style="border-radius: 50%;" [src]="picture">
         </ion-avatar>
-        <button ion-button clear menuClose full (click)="openPage(userProfile)">
+        <button ion-button clear menuClose full (click)="openPage({ title: 'Login', pageName: 'LoginPage', icon: 'user', fav: false })">
           <!-- <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon> -->
           {{displayName}}
         </button>
@@ -24,17 +24,23 @@
     </ng-template>
     <ng-template #notLogin>
       <ion-list>
-        <button clear ion-item menuClose (click)="loginUser()">
+        <button clear ion-item menuClose (click)="openPage({ title: 'Login', pageName: 'LoginPage', icon: 'user', fav: false })">
            <ion-icon item-start name="person"></ion-icon>
            Iniciar Sesión
         </button>
       </ion-list>
     </ng-template>
-    <ion-list>
-      <button ion-item menuClose *ngFor="let p of pages" (click)="openPage(p)">
-          <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
-          {{ p.title }}
-        </button>
+    <ion-list *ngIf="user.roll == 'cliente'">
+      <button ion-item menuClose *ngFor="let p of clientPages" (click)="openPage(p)">
+        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
+        {{ p.title }}
+      </button>
+    </ion-list>
+        <ion-list *ngIf="user.roll == 'chofer'">
+      <button ion-item menuClose *ngFor="let p of driverPages" (click)="openPage(p)">
+        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
+        {{ p.title }}
+      </button>
     </ion-list>
     <br>
   </ion-content>
