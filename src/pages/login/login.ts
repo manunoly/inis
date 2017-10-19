@@ -29,4 +29,12 @@ export class LoginPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
+
+  forgetPassword(){
+     this.navCtrl.push("ResetPasswordPage");
+  }
+
+  newUser(){
+     this.navCtrl.push("RegisterPage");
+  }
 }

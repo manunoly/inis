@@ -19,8 +19,17 @@
           <ion-label floating clearInput icon-left><ion-icon name="unlock"></ion-icon>Contraseña</ion-label>
           <ion-input type="password" formControlName="password"></ion-input>
         </ion-item>
+        <ion-item no-lines style="background-color: transparent">
+          <a item-end (click)="forgetPassword()"> Olvidé mi contraseña!</a>
+        </ion-item>
         <br>
-        <button round full text-center ion-button type="submit" [disabled]="!login.valid">Ingresar </button>
+        <div offset-sm-2 col-sm-8>
+          <button round full text-center ion-button type="submit" [disabled]="!login.valid">Ingresar </button>
+        </div>
+        <br>
+        <ion-item text-center no-lines style="background-color: transparent">
+          <a (click)="newUser()">Nuevo Usuario? Registrate ahora</a>
+        </ion-item>
       </ion-col>
       </ion-row>
     </form>
