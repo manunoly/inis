@@ -18,7 +18,7 @@ export interface PageInterface {
   templateUrl: 'app.html'
 })
 export class MyApp {
-    displayName = "Visitante";
+  displayName = "Visitante";
   picture = "assets/icon/favicon.ico";
   userProfile: any;
   rootPage: any = "HomePage";
