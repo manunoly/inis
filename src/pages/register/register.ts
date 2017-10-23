@@ -15,17 +15,28 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: 'register.html',
 })
 export class RegisterPage {
-  roll="client";
-  private client : FormGroup;
-  private driver : FormGroup;
+  roll = "client";
+  private client: FormGroup;
+  private driver: FormGroup;
   constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder) {
-      this.driver = this.formBuilder.group({
+    this.client = this.formBuilder.group({
       name: ['', Validators.required],
+      phone: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', Validators.required],
+      password1: ['', Validators.required],
     });
-      this.client = this.formBuilder.group({
-      name: ['', Validators.required],
-      password: ['', Validators.required],
+    this.driver = this.formBuilder.group({
+      driverName: ['', Validators.required],
+      driverPhone: ['', Validators.required],
+      driverEmail: ['', Validators.required],
+      driverPassword: ['', Validators.required],
+      driverPassword1: ['', Validators.required],
+      driverCar: ['', Validators.required],
+      driverCarYear: ['', Validators.required],
+      driverCapacity: ['', Validators.required],
+      driverComodidades: ['', Validators.required],
+
     });
   }
 
@@ -33,8 +44,10 @@ export class RegisterPage {
     console.log('ionViewDidLoad RegisterPage');
   }
 
-  newClient(){
-    console.log("cliente")
+  newClient() {
+    console.log(this.client.value);
   }
-
+  newDriver() {
+    console.log(this.driver.value);
+  }
 }

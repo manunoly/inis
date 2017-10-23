@@ -1,22 +1,23 @@
+<ion-navbar>
+  <ion-title>Iniciar Seción</ion-title>
+</ion-navbar>
 
-  <ion-navbar>
-    <ion-title>Iniciar Seción</ion-title>
-  </ion-navbar>
 
-
-<ion-content padding style="background-color:#8B193D">
+<ion-content padding>
   <div text-center>
-    <img alt="Inis-Taxi" src="assets/img/logo-inis.png"/>
+    <img alt="Inis-Taxi" src="assets/img/logo-inis.png" />
   </div>
   <form [formGroup]="login" (ngSubmit)="logForm()">
     <ion-row>
       <ion-col offset-sm-3 col-sm-6>
         <ion-item style="background-color: transparent">
-          <ion-label floating clearInput icon-left><ion-icon name="at"></ion-icon> Email</ion-label>
+          <ion-label floating clearInput icon-left>
+            <ion-icon name="at"></ion-icon> Email</ion-label>
           <ion-input type="email" formControlName="email"></ion-input>
         </ion-item>
-        <ion-item  style="background-color: transparent">
-          <ion-label floating clearInput icon-left><ion-icon name="unlock"></ion-icon>Contraseña</ion-label>
+        <ion-item style="background-color: transparent">
+          <ion-label floating clearInput icon-left>
+            <ion-icon name="unlock"></ion-icon>Contraseña</ion-label>
           <ion-input type="password" formControlName="password"></ion-input>
         </ion-item>
         <ion-item no-lines style="background-color: transparent">
@@ -31,6 +32,6 @@
           <a (click)="newUser()">Nuevo Usuario? Registrate ahora</a>
         </ion-item>
       </ion-col>
-      </ion-row>
-    </form>
+    </ion-row>
+  </form>
 </ion-content>
