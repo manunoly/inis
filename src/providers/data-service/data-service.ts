@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-// import { Http } from '@angular/http';
+import { Http } from "@angular/http";
 import "rxjs/add/operator/map";
-
+import "rxjs/add/operator/toPromise";
 /*
   Generated class for the DataServiceProvider provider.
 
@@ -58,9 +58,29 @@ export class DataServiceProvider {
       star: 5
     }
   ];
-  // constructor(public http: Http) {
-  constructor() {
+  constructor(public http: Http) {
+    // constructor() {
     console.log("Hello DataServiceProvider Provider");
+  }
+
+  autenticated(loginForm) {
+    return this.http
+      .post(
+        "http://localhost/autenticated.php",
+        JSON.stringify({
+          email: loginForm.email,
+          password: loginForm.password
+        })
+      )
+      .toPromise()
+      .then(response => {
+        if (response.status == 200) console.log(response);
+        return response.statusText;
+      })
+      .catch(error => {
+        console.log(error);
+        return error;
+      });
   }
 
   getRace() {
