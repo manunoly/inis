@@ -14,9 +14,16 @@ import { DataServiceProvider } from "../providers/data-service/data-service";
 import { Geolocation } from "@ionic-native/geolocation";
 import { GoogleMaps } from "@ionic-native/google-maps";
 
+import { IonicStorageModule } from "@ionic/storage";
+
 @NgModule({
   declarations: [MyApp, DriverRaceDetailPage, ClientRaceDetailPage],
-  imports: [BrowserModule, HttpModule, IonicModule.forRoot(MyApp)],
+  imports: [
+    BrowserModule,
+    HttpModule,
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
+  ],
   bootstrap: [IonicApp],
   entryComponents: [MyApp, DriverRaceDetailPage, ClientRaceDetailPage],
   providers: [

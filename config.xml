@@ -89,4 +89,5 @@
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyArg2lSRJ2w-I3M2oZsPnwvTI_NyXEmEMg" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyBH6ZtpWgxH1LOmpEilmTCln0w3gbNZxLs" />
     </plugin>
+    <plugin name="cordova-plugin-x-toast" spec="^2.6.0" />
 </widget>

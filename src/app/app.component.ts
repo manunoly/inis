@@ -1,9 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
-import { Platform, Nav, ModalController } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import { Component, ViewChild } from "@angular/core";
+import { Platform, Nav, ModalController } from "ionic-angular";
+import { StatusBar } from "@ionic-native/status-bar";
+import { SplashScreen } from "@ionic-native/splash-screen";
 
-// import { HomePage } from '../pages/home/home';
+import { Storage } from "@ionic/storage";
 
 export interface PageInterface {
   title: string;
@@ -15,7 +15,7 @@ export interface PageInterface {
 }
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: "app.html"
 })
 export class MyApp {
   displayName = "Visitante";
@@ -26,46 +26,79 @@ export class MyApp {
   small: boolean = true;
   // rootPage:any = HomePage;
   @ViewChild(Nav) nav: Nav;
-  user = {roll:"cliente", name:"Andres Iniesta", id:12};
-  driver = {roll:"chofer", name:"Marc Andre T", id:11};
+  user: any;
+  driver = { roll: "chofer", name: "Marc Andre T", id: 11 };
   clientPages: PageInterface[] = [
     {
       title: "Inicio",
       pageName: "HomePage",
       icon: "home",
       fav: false
-    }, { title: "Solicitar Carrera", pageName: "RaceRequestPage", icon: "car", fav: false },
-    { title: "Mis Solicitudes", pageName: "ListRaceServicePage", icon: "calendar", fav: false }
+    },
+    {
+      title: "Solicitar Carrera",
+      pageName: "RaceRequestPage",
+      icon: "car",
+      fav: false
+    },
+    {
+      title: "Mis Solicitudes",
+      pageName: "ListRaceServicePage",
+      icon: "calendar",
+      fav: false
+    }
   ];
 
-    driverPages: PageInterface[] = [
+  driverPages: PageInterface[] = [
     {
       title: "Inicio",
       pageName: "HomePage",
       icon: "home",
       fav: false
     },
-    { title: "Mis Carreras", pageName: "ListRacePage", icon: "calendar", fav: false }
+    {
+      title: "Mis Carreras",
+      pageName: "ListRacePage",
+      icon: "calendar",
+      fav: false
+    }
   ];
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(
+    platform: Platform,
+    statusBar: StatusBar,
+    splashScreen: SplashScreen,
+    public storage: Storage
+  ) {
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+      this.storage.set("user", {
+        roll: "cliente",
+        name: "Andres Iniesta",
+        id: 12,
+        picture: "assets/icon/favicon.ico"
+      });
+      this.storage.get("user").then(userData => {
+        if (userData) {
+          console.log(userData);
+          this.user = userData;
+        } else console.log("no userData");
+        // if (userData.roll) this.user = userData;
+      });
     });
   }
 
-    loginUser(){
-   console.log("LoginPage");
+  loginUser() {
+    console.log("LoginPage");
   }
 
   signOut() {
+    this.storage.set("user", null);
     console.log("this.authS.logout()");
   }
 
-    openPage(page: PageInterface) {
+  openPage(page: PageInterface) {
     let params = {};
 
     // The index is equal to the order of our tabs inside tabs.ts
@@ -105,4 +138,3 @@ export class MyApp {
     return;
   }
 }
-

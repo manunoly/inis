@@ -1,5 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
+import {
+  Platform,
+  ModalController,
+  AlertController,
+  ToastController
+} from "ionic-angular";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/toPromise";
 /*
@@ -58,7 +64,7 @@ export class DataServiceProvider {
       star: 5
     }
   ];
-  constructor(public http: Http) {
+  constructor(public http: Http, public toastCtrl: ToastController) {
     // constructor() {
     console.log("Hello DataServiceProvider Provider");
   }
@@ -72,15 +78,7 @@ export class DataServiceProvider {
           password: loginForm.password
         })
       )
-      .toPromise()
-      .then(response => {
-        if (response.status == 200) console.log(response);
-        return response.statusText;
-      })
-      .catch(error => {
-        console.log(error);
-        return error;
-      });
+      .toPromise();
   }
 
   getRace() {
@@ -129,5 +127,16 @@ export class DataServiceProvider {
       }
     });
     return tmpRace;
+  }
+
+  showNotification(message, time = 3000) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: time,
+      position: "top",
+      // cssClass: "text-center toastStyle",
+      dismissOnPageChange: true
+    });
+    toast.present();
   }
 }

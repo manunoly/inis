@@ -1,25 +1,37 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the ResetPasswordPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Component } from "@angular/core";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 
 @IonicPage()
 @Component({
-  selector: 'page-reset-password',
-  templateUrl: 'reset-password.html',
+  selector: "page-reset-password",
+  templateUrl: "reset-password.html"
 })
 export class ResetPasswordPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private resetPasswordF: FormGroup;
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private formBuilder: FormBuilder
+  ) {
+    this.resetPasswordF = this.formBuilder.group({
+      email: [
+        "",
+        Validators.compose([
+          Validators.maxLength(50),
+          Validators.minLength(5),
+          Validators.email,
+          Validators.required
+        ])
+      ]
+    });
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ResetPasswordPage');
+    console.log("ionViewDidLoad ResetPasswordPage");
   }
 
+  resetPassword(){
+    console.log(this.resetPasswordF.value);
+  }
 }
