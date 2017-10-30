@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams, Events } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { DataServiceProvider } from "../../providers/data-service/data-service";
+import { DataServiceProvider } from "./../../providers/data-service/data-service";
 
 import { Storage } from "@ionic/storage";
 

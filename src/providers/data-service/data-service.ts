@@ -8,6 +8,7 @@ import {
 } from "ionic-angular";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/toPromise";
+import "rxjs/add/operator/catch";
 // import { ReplaySubject } from "rxjs/ReplaySubject";
 // import { Storage } from "@ionic/storage";
 // import { Observable } from 'rxjs/Observable';
@@ -16,6 +17,7 @@ import "rxjs/add/operator/toPromise";
 @Injectable()
 export class DataServiceProvider {
   stars = [];
+  public static readonly SERVER = "http://localhost/";
   // parameter: ReplaySubject<string> = new ReplaySubject<string>(1);
   races = [
     {
@@ -64,10 +66,7 @@ export class DataServiceProvider {
       star: 5
     }
   ];
-  constructor(
-    public http: Http,
-    public toastCtrl: ToastController
-  ) {
+  constructor(public http: Http, public toastCtrl: ToastController) {
     // this.storage.get("user").then(param => {
     //   if (param) {
     //     this.parameter.next(param);
@@ -76,6 +75,34 @@ export class DataServiceProvider {
     //   }
     //   console.log("2 error parameter user data service");
     // });
+  }
+  postData(url = null, params: any) {
+    // let headers = new Headers({ 'Content-Type': 'application/json' });
+    // let options = new RequestOptions({ headers: headers });
+    return this.http
+      .post(DataServiceProvider.SERVER + url, {email:"Asdfsd@asd"})
+      .toPromise()
+      .then(data => {
+        console.log("en el then");
+        console.log(data);
+      })
+      .catch(error => {
+        console.log("en el error");
+      });
+
+    // .subscribe(
+    //   data => {
+    //     console.log("Get post Response");
+    //     console.log(data);
+    //   },
+    //   err => {
+    //     console.log("Error Response");
+    //     console.log(err);
+    //   },
+    //   () => {
+    //     console.log("Default Response");
+    //   }
+    // );
   }
 
   autenticated(loginForm) {
@@ -138,7 +165,7 @@ export class DataServiceProvider {
     return tmpRace;
   }
 
-  showNotification(message, time = 3000,pageChance=true) {
+  showNotification(message, time = 3000, pageChance = true) {
     let toast = this.toastCtrl.create({
       message: message,
       duration: time,

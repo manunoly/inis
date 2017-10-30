@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { DataServiceProvider } from "./../../providers/data-service/data-service";
 
 @IonicPage()
 @Component({
@@ -13,7 +14,8 @@ export class ResetPasswordPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dataS: DataServiceProvider
   ) {
     this.resetPasswordF = this.formBuilder.group({
       email: [
@@ -32,8 +34,7 @@ export class ResetPasswordPage {
     console.log("ionViewDidLoad ResetPasswordPage");
   }
 
-  resetPassword(){
-    this.submitF = true;
-    console.log(this.resetPasswordF.value);
+  resetPassword() {
+    let postData = this.dataS.postData("post.php", this.resetPasswordF.value);
   }
 }
