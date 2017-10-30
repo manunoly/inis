@@ -16,6 +16,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class RegisterPage {
   roll = "client";
+  submitF = false;
   private client: FormGroup;
   private driver: FormGroup;
   constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder) {
@@ -45,9 +46,11 @@ export class RegisterPage {
   }
 
   newClient() {
+    this.submitF = true;
     console.log(this.client.value);
   }
   newDriver() {
+    this.submitF = true;
     console.log(this.driver.value);
   }
 }

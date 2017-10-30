@@ -5,7 +5,13 @@
 
 <ion-content padding>
   <div text-center>
-    <img alt="Inis-Taxi" src="assets/img/logo-inis.png" />
+    <ion-col col-sm-8>
+      <ion-item no-lines>
+        <ion-thumbnail>
+          <img alt="Inis-Taxi" src="assets/img/logo-inis.png" />
+        </ion-thumbnail>
+      </ion-item>
+    </ion-col>
   </div>
   <form [formGroup]="login" (ngSubmit)="logForm()">
     <ion-row>
@@ -28,7 +34,7 @@
           <button round full text-center ion-button type="submit" [disabled]="!login.valid">Ingresar </button>
         </div>
         <br>
-        <ion-item text-center no-lines style="background-color: transparent">
+        <ion-item text-center no-lines style="background-color: transparent" text-wrap>
           <a (click)="newUser()">Nuevo Usuario? Registrate ahora</a>
         </ion-item>
       </ion-col>

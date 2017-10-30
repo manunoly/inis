@@ -8,7 +8,7 @@ import { IonicPage, NavController, NavParams } from "ionic-angular";
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+// @IonicPage()
 @Component({
   selector: "page-client-race-detail",
   templateUrl: "client-race-detail.html"

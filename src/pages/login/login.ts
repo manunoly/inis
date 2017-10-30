@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { IonicPage, NavController, NavParams, Events } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { DataServiceProvider } from "../../providers/data-service/data-service";
 
@@ -18,7 +18,8 @@ export class LoginPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private formBuilder: FormBuilder,
-    public storage: Storage
+    public storage: Storage,
+    public events: Events
   ) {
     this.login = this.formBuilder.group({
       email: [
@@ -248,26 +249,28 @@ export class LoginPage {
       var i = B(Y) + B(X) + B(W) + B(V);
       return i.toLowerCase();
     };
-    this.login.controls["password"].setValue(MD5(this.login.value.password));
-    this.dataS
-      .autenticated(this.login.value)
-      .then(response => {
-        if (response.status == 200) {
-          this.storage.set("user", {
-            roll: "cliente",
-            name: "Andres Iniesta",
-            id: 12,
-            picture: "assets/icon/favicon.ico"
-          });
-          console.log("response 200");
-        } else {
-          this.msg = response.statusText;
-        }
+    this.storage
+      .set("user", {
+        roll: "cliente",
+        name: "Andres Iniesta",
+        id: 12,
+        picture: "assets/icon/favicon.ico"
       })
-      .catch(error => {
-        console.log(error);
-        console.log("en el catch");
+      .then(_ => {
+        this.events.publish("user:changeStatus");
+        this.dataS.showNotification("Bienvenido", 3000, false);
       });
+
+    this.login.controls["password"].setValue(MD5(this.login.value.password));
+    // this.dataS
+    //   .autenticated(this.login.value)
+    //   .then(response => {
+    //     console.log(response);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     console.log("en el catch login");
+    //   });
   }
 
   ionViewDidLoad() {

@@ -9,6 +9,7 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 })
 export class ResetPasswordPage {
   private resetPasswordF: FormGroup;
+  submitF = false;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -32,6 +33,7 @@ export class ResetPasswordPage {
   }
 
   resetPassword(){
+    this.submitF = true;
     console.log(this.resetPasswordF.value);
   }
 }

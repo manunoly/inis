@@ -8,15 +8,15 @@ import {
 } from "ionic-angular";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/toPromise";
-/*
-  Generated class for the DataServiceProvider provider.
+// import { ReplaySubject } from "rxjs/ReplaySubject";
+// import { Storage } from "@ionic/storage";
+// import { Observable } from 'rxjs/Observable';
+// import 'rxjs/add/observable/fromPromise';
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class DataServiceProvider {
   stars = [];
+  // parameter: ReplaySubject<string> = new ReplaySubject<string>(1);
   races = [
     {
       id_race: 1,
@@ -64,9 +64,18 @@ export class DataServiceProvider {
       star: 5
     }
   ];
-  constructor(public http: Http, public toastCtrl: ToastController) {
-    // constructor() {
-    console.log("Hello DataServiceProvider Provider");
+  constructor(
+    public http: Http,
+    public toastCtrl: ToastController
+  ) {
+    // this.storage.get("user").then(param => {
+    //   if (param) {
+    //     this.parameter.next(param);
+    //   } else {
+    //     console.log("1 error parameter user data service");
+    //   }
+    //   console.log("2 error parameter user data service");
+    // });
   }
 
   autenticated(loginForm) {
@@ -129,13 +138,13 @@ export class DataServiceProvider {
     return tmpRace;
   }
 
-  showNotification(message, time = 3000) {
+  showNotification(message, time = 3000,pageChance=true) {
     let toast = this.toastCtrl.create({
       message: message,
       duration: time,
       position: "top",
       // cssClass: "text-center toastStyle",
-      dismissOnPageChange: true
+      dismissOnPageChange: pageChance
     });
     toast.present();
   }

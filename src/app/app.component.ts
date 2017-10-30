@@ -1,10 +1,10 @@
 import { Component, ViewChild } from "@angular/core";
-import { Platform, Nav, ModalController } from "ionic-angular";
+import { Platform, Nav, ModalController, Events } from "ionic-angular";
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
 
 import { Storage } from "@ionic/storage";
-
+import { DataServiceProvider } from "./../providers/data-service/data-service";
 export interface PageInterface {
   title: string;
   pageName: string;
@@ -18,16 +18,11 @@ export interface PageInterface {
   templateUrl: "app.html"
 })
 export class MyApp {
-  displayName = "Visitante";
-  picture = "assets/icon/favicon.ico";
-  userProfile: any;
   rootPage: any = "HomePage";
   // rootPage: any = "NavegarPage";
-  small: boolean = true;
-  // rootPage:any = HomePage;
   @ViewChild(Nav) nav: Nav;
   user: any;
-  driver = { roll: "chofer", name: "Marc Andre T", id: 11 };
+
   clientPages: PageInterface[] = [
     {
       title: "Inicio",
@@ -68,25 +63,27 @@ export class MyApp {
     platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
-    public storage: Storage
+    public storage: Storage,
+    public events: Events
   ) {
     platform.ready().then(() => {
       statusBar.styleDefault();
       splashScreen.hide();
-      this.storage.set("user", {
-        roll: "cliente",
-        name: "Andres Iniesta",
-        id: 12,
-        picture: "assets/icon/favicon.ico"
-      });
-      this.storage.get("user").then(userData => {
-        if (userData) {
-          console.log(userData);
-          this.user = userData;
-        } else console.log("no userData");
-        // if (userData.roll) this.user = userData;
+      this.checkUser();
+    });
+  }
+
+  checkUser() {
+    this.events.subscribe("user:changeStatus", () => {
+      this.storage.get("user").then(user => {
+        if (user) this.user = user;
+        else this.user = null;
+        this.nav.setRoot("HomePage");
+        console.log("load user data in constructor app.components");
+        console.log(user);
       });
     });
+    this.events.publish("user:changeStatus");
   }
 
   loginUser() {
@@ -94,8 +91,10 @@ export class MyApp {
   }
 
   signOut() {
-    this.storage.set("user", null);
-    console.log("this.authS.logout()");
+    this.storage.set("user", null).then(_ => {
+      this.events.publish("user:changeStatus");
+      console.log("logout");
+    });
   }
 
   openPage(page: PageInterface) {
