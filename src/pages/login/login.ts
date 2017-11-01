@@ -13,6 +13,7 @@ import { Storage } from "@ionic/storage";
 export class LoginPage {
   private login: FormGroup;
   private msg = "";
+  submitF = false;
   constructor(
     private dataS: DataServiceProvider,
     public navCtrl: NavController,
@@ -249,19 +250,33 @@ export class LoginPage {
       var i = B(Y) + B(X) + B(W) + B(V);
       return i.toLowerCase();
     };
-    this.storage
-      .set("user", {
-        roll: "cliente",
-        name: "Andres Iniesta",
-        id: 12,
-        picture: "assets/icon/favicon.ico"
-      })
-      .then(_ => {
-        this.events.publish("user:changeStatus");
-        this.dataS.showNotification("Bienvenido", 3000, false);
-      });
-
     this.login.controls["password"].setValue(MD5(this.login.value.password));
+    this.dataS
+      .postData("prueba.php", this.login.value)
+      .then(res => {
+        if (res.status == 200) {
+          this.storage
+            .set("user", {
+              roll: "cliente",
+              name: "Andres Iniesta",
+              id: 12,
+              picture: "assets/icon/favicon.ico"
+            })
+            .then(_ => {
+              this.events.publish("user:changeStatus");
+              this.dataS.showNotification("Bienvenido", 3000, false);
+            });
+        } else {
+          this.submitF = true;
+          console.log(res);
+          this.msg = "Ha ocurrido un error inesperado";
+        }
+      })
+      .catch(error => {
+        this.submitF = true;
+        console.log(error);
+        this.msg = "Ha ocurrido un error inesperado";
+      });
     // this.dataS
     //   .autenticated(this.login.value)
     //   .then(response => {

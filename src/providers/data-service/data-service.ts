@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { Http } from "@angular/http";
+import { Http, Response } from "@angular/http";
+import { Headers, RequestOptions } from "@angular/http";
 import {
   Platform,
   ModalController,
@@ -13,6 +14,7 @@ import "rxjs/add/operator/catch";
 // import { Storage } from "@ionic/storage";
 // import { Observable } from 'rxjs/Observable';
 // import 'rxjs/add/observable/fromPromise';
+import { Storage } from "@ionic/storage";
 
 @Injectable()
 export class DataServiceProvider {
@@ -66,7 +68,11 @@ export class DataServiceProvider {
       star: 5
     }
   ];
-  constructor(public http: Http, public toastCtrl: ToastController) {
+  constructor(
+    public http: Http,
+    public storage: Storage,
+    public toastCtrl: ToastController
+  ) {
     // this.storage.get("user").then(param => {
     //   if (param) {
     //     this.parameter.next(param);
@@ -76,33 +82,38 @@ export class DataServiceProvider {
     //   console.log("2 error parameter user data service");
     // });
   }
-  postData(url = null, params: any) {
-    // let headers = new Headers({ 'Content-Type': 'application/json' });
-    // let options = new RequestOptions({ headers: headers });
-    return this.http
-      .post(DataServiceProvider.SERVER + url, {email:"Asdfsd@asd"})
-      .toPromise()
-      .then(data => {
-        console.log("en el then");
-        console.log(data);
+
+  getUserLocalStorage() {
+    return this.storage
+      .get("user")
+      .then(userData => {
+        return userData;
       })
       .catch(error => {
-        console.log("en el error");
+        return "Ha ocurrido un error" + error;
       });
+  }
 
-    // .subscribe(
-    //   data => {
-    //     console.log("Get post Response");
-    //     console.log(data);
-    //   },
-    //   err => {
-    //     console.log("Error Response");
-    //     console.log(err);
-    //   },
-    //   () => {
-    //     console.log("Default Response");
-    //   }
-    // );
+  getUserLocalToken() {
+    return this.storage
+      .get("token")
+      .then(token => {
+        if (token) return token;
+        return null;
+      })
+      .catch(error => {
+        console.log("error leyendo el token" + error);
+        return "Error obteniendo el token" + error;
+      });
+  }
+
+  postData(url = null, params: any) {
+    let headers = new Headers({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + this.getUserLocalToken()
+    });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(DataServiceProvider.SERVER + url, params).toPromise();
   }
 
   autenticated(loginForm) {

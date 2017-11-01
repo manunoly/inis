@@ -11,6 +11,7 @@ import { DataServiceProvider } from "./../../providers/data-service/data-service
 export class ResetPasswordPage {
   private resetPasswordF: FormGroup;
   submitF = false;
+  msg = "";
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -35,6 +36,21 @@ export class ResetPasswordPage {
   }
 
   resetPassword() {
-    let postData = this.dataS.postData("post.php", this.resetPasswordF.value);
+    let postData = this.dataS.postData("prueba.php", this.resetPasswordF.value);
+    postData
+    .then(data => {
+      console.log(data);
+      if(data.status == 200){
+        this.submitF = true;
+      this.msg = data.text();
+      }else
+      this.submitF = true;
+      this.msg = data.text();
+    })
+    .catch(error => {
+      this.submitF = true;
+      console.log(error);
+      this.msg = "Ha ocurrido un error inesperado";
+    });
   }
 }
