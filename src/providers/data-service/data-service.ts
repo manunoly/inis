@@ -19,7 +19,7 @@ import { Storage } from "@ionic/storage";
 @Injectable()
 export class DataServiceProvider {
   stars = [];
-  public static readonly SERVER = "http://localhost/";
+  public static readonly SERVER = "http://localhost:8000/api/";
   // parameter: ReplaySubject<string> = new ReplaySubject<string>(1);
   races = [
     {
@@ -103,28 +103,27 @@ export class DataServiceProvider {
       })
       .catch(error => {
         console.log("error leyendo el token" + error);
-        return "Error obteniendo el token" + error;
+        this.showNotification("Ha ocurrido un error inesperado!");
+        return null;
       });
+  }
+  getData(url) {
+    let headers = new Headers({
+      Authorization: this.getUserLocalToken(),
+      "Content-Type": "application/json, charset=UTF-8"
+    });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(DataServiceProvider.SERVER + url, options).toPromise();
   }
 
   postData(url = null, params: any) {
     let headers = new Headers({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + this.getUserLocalToken()
+      Authorization: this.getUserLocalToken(),
+      "Content-Type": "application/x-www-form-urlencoded"
     });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(DataServiceProvider.SERVER + url, params).toPromise();
-  }
-
-  autenticated(loginForm) {
     return this.http
-      .post(
-        "http://localhost/autenticated.php",
-        JSON.stringify({
-          email: loginForm.email,
-          password: loginForm.password
-        })
-      )
+      .post(DataServiceProvider.SERVER + url, params, options)
       .toPromise();
   }
 
