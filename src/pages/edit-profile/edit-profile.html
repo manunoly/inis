@@ -1,21 +1,11 @@
 <ion-navbar>
-  <ion-title>Editar mis Datos de Perfil</ion-title>
+  <ion-title>Datos Personales</ion-title>
 </ion-navbar>
 
 <ion-content padding>
   <div [hidden]="submitF">
-    <ion-row offset-sm-4 col-sm-4 radio-group [(ngModel)]="roll">
-      <ion-col text-center>
-        <ion-label>Cliente</ion-label>
-        <ion-radio value="client" checked></ion-radio>
-      </ion-col>
-      <ion-col text-center>
-        <ion-label>Chofer</ion-label>
-        <ion-radio value="driver"></ion-radio>
-      </ion-col>
-    </ion-row>
-    <div [hidden]="roll != 'client'">
-      <form [formGroup]="client" (ngSubmit)="newClient()">
+    <div [hidden]="roll != 'cliente'">
+      <form [formGroup]="client" (ngSubmit)="updateClient()">
         <ion-row>
           <ion-col offset-sm-3 col-sm-6>
             <ion-item>
@@ -38,21 +28,16 @@
                 <ion-icon name="unlock"></ion-icon>Contraseña</ion-label>
               <ion-input type="password" formControlName="password"></ion-input>
             </ion-item>
-            <ion-item>
-              <ion-label floating clearInput icon-left>
-                <ion-icon name="unlock"></ion-icon>Repetir Contraseña</ion-label>
-              <ion-input type="password" formControlName="password1"></ion-input>
-            </ion-item>
             <br>
             <div offset-sm-2 col-sm-8>
-              <button round full text-center ion-button type="submit" [disabled]="!client.valid">Ingresar </button>
+              <button round full text-center ion-button type="submit" [disabled]="!client.valid">Actualizar </button>
             </div>
             <br>
           </ion-col>
         </ion-row>
       </form>
     </div>
-    <div [hidden]="roll != 'driver'">
+    <div [hidden]="roll != 'chofer'">
       <form [formGroup]="driver" (ngSubmit)="updateDriver()">
         <ion-row>
           <ion-col offset-sm-3 col-sm-6>
@@ -75,11 +60,6 @@
               <ion-label floating clearInput icon-left>
                 <ion-icon name="unlock"></ion-icon>Contraseña</ion-label>
               <ion-input type="password" formControlName="driverPassword"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label floating clearInput icon-left>
-                <ion-icon name="unlock"></ion-icon>Repetir Contraseña</ion-label>
-              <ion-input type="password" formControlName="driverPassword1"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label floating clearInput icon-left>
@@ -107,7 +87,7 @@
             </ion-item>
             <br>
             <div offset-sm-2 col-sm-8>
-              <button round full text-center ion-button type="submit" [disabled]="!driver.valid">Registrar </button>
+              <button round full text-center ion-button type="submit" [disabled]="!driver.valid">Actualizar </button>
             </div>
             <br>
           </ion-col>

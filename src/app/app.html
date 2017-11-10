@@ -11,7 +11,12 @@
         <!-- <ion-avatar class="profilepicsize">
           <img style="border-radius: 50%;" [src]="picture">
         </ion-avatar> -->
-        <button ion-button clear menuClose full>
+        <button ion-button clear menuClose full (click)="openPage({
+          title: '',
+          pageName: 'EditProfilePage',
+          icon:'',
+          fav: false
+        })">
           <!-- <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon> -->
           {{user.name}}
         </button>

@@ -1,9 +1,7 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams, Events } from "ionic-angular";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { DataServiceProvider } from "./../../providers/data-service/data-service";
-
-import { Storage } from "@ionic/storage";
 
 @IonicPage()
 @Component({
@@ -18,9 +16,7 @@ export class LoginPage {
     private dataS: DataServiceProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
-    private formBuilder: FormBuilder,
-    public storage: Storage,
-    public events: Events
+    private formBuilder: FormBuilder
   ) {
     this.login = this.formBuilder.group({
       email: [
@@ -43,50 +39,19 @@ export class LoginPage {
     });
   }
   logForm() {
-    let returData = {
-      token:
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiQW5keSIsInBob25lIjoiNzI3Mjc0ODkiLCJzdGF0dXMiOiIxIiwibGF0aXR1ZGUiOiIxMiIsImxvbmdpdHVkZSI6IjEzIiwiZW1haWxfYWRkcmVzcyI6ImFuZHlAZ21haWwuY29tIiwicm9sbCI6ImNsaWVudGUiLCJqdGkiOiJhOTU3MWIzNy1hOTY3LTRjYTMtODY3My1kYzUxNGE3NWFiNDMiLCJpYXQiOjE1MDk2NTg4ODgsImV4cCI6MTUwOTY2MjQ4OH0.iB0IJB6KYsod29evP0BtSOogYUrAoik-kcV4X5qKvBM"
-    };
-    let returDataD = {
-      token:
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiQW5kcmVzIEluaWVzdGEiLCJwaG9uZSI6IjcyNzI3NDg5Iiwic3RhdHVzIjoiMSIsImxhdGl0dWRlIjoiMTIiLCJsb25naXR1ZGUiOiIxMyIsImVtYWlsX2FkZHJlc3MiOiJhbmR5QGdtYWlsLmNvbSIsInJvbGwiOiJjaG9mZXIiLCJqdGkiOiI1NmVlN2U5NC04MGE3LTQ3YWQtYmYxNC0xZTZiY2QxZmMyMjUiLCJpYXQiOjE1MDk2NjA1ODgsImV4cCI6MTUwOTY2NDE4OH0.FjXh2l8rpLRE8LUS8-lIml1h-9wT4OuKJcUN_WDsAvU"
-    };
-
-    // this.storage.set("token", returData.token).catch(error => console.log(error));
-    this.storage.set("token", returDataD.token).catch(error => console.log(error));
-    this.storage.set("user", this.parseJwt(returDataD.token)).then(_ => {
-      this.events.publish("user:changeStatus");
-      this.dataS.showNotification("Bienvenido", 3000, false);
-    }).catch();
-    // this.login.controls["password"].setValue(this.MD5(this.login.value.password));
-    /* this.dataS
-      .postData("login", this.login.value)
-      .then(res => {
-        if (res.status == 200) {
-          this.storage
-            .set("user", {
-              roll: "cliente",
-              name: "Andres Iniesta",
-              id: 12,
-              picture: "assets/icon/favicon.ico"
-            })
-            .then(_ => {
-              this.events.publish("user:changeStatus");
-              this.dataS.showNotification("Bienvenido", 3000, false);
-            });
-          this.submitF = true;
-          this.msg = res.text();
-        } else {
-          this.submitF = true;
-          console.log(res);
-          this.msg = res.text();
-        }
-      })
-      .catch(error => {
-        this.submitF = true;
-        console.log(error);
-        this.msg = "Ha ocurrido un error inesperado";
-      }); */
+    let returData: any;
+    if (this.login.value.email == "manuel@as") {
+      returData = {
+        token:
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiQW5keSIsInBob25lIjoiNzI3Mjc0ODkiLCJzdGF0dXMiOiIxIiwibGF0aXR1ZGUiOiIxMiIsImxvbmdpdHVkZSI6IjEzIiwiZW1haWxfYWRkcmVzcyI6ImFuZHlAZ21haWwuY29tIiwicm9sbCI6ImNsaWVudGUiLCJqdGkiOiJhOTU3MWIzNy1hOTY3LTRjYTMtODY3My1kYzUxNGE3NWFiNDMiLCJpYXQiOjE1MDk2NTg4ODgsImV4cCI6MTUwOTY2MjQ4OH0.iB0IJB6KYsod29evP0BtSOogYUrAoik-kcV4X5qKvBM"
+      };
+    } else {
+      returData = {
+        token:
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiQW5kcmVzIEluaWVzdGEiLCJwaG9uZSI6IjcyNzI3NDg5Iiwic3RhdHVzIjoiMSIsImxhdGl0dWRlIjoiMTIiLCJsb25naXR1ZGUiOiIxMyIsImVtYWlsX2FkZHJlc3MiOiJhbmR5QGdtYWlsLmNvbSIsInJvbGwiOiJjaG9mZXIiLCJqdGkiOiI1NmVlN2U5NC04MGE3LTQ3YWQtYmYxNC0xZTZiY2QxZmMyMjUiLCJpYXQiOjE1MDk2NjA1ODgsImV4cCI6MTUwOTY2NDE4OH0.FjXh2l8rpLRE8LUS8-lIml1h-9wT4OuKJcUN_WDsAvU"
+      };
+    }
+    this.dataS.setUserLocalData(returData.token);
   }
 
   ionViewDidLoad() {
@@ -99,12 +64,6 @@ export class LoginPage {
 
   newUser() {
     this.navCtrl.push("RegisterPage");
-  }
-
-  parseJwt(token) {
-    var base64Url = token.split(".")[1];
-    var base64 = base64Url.replace("-", "+").replace("_", "/");
-    return JSON.parse(window.atob(base64));
   }
 
   MD5(s) {

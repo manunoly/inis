@@ -5,20 +5,28 @@ import {
   Platform,
   ModalController,
   AlertController,
-  ToastController
+  ToastController,
+  Events
 } from "ionic-angular";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/toPromise";
 import "rxjs/add/operator/catch";
+import "rxjs/add/observable/timer";
+import { Observable } from "rxjs/Observable";
 // import { ReplaySubject } from "rxjs/ReplaySubject";
 // import { Storage } from "@ionic/storage";
 // import { Observable } from 'rxjs/Observable';
 // import 'rxjs/add/observable/fromPromise';
 import { Storage } from "@ionic/storage";
+import { Geolocation } from "@ionic-native/geolocation";
 
 @Injectable()
 export class DataServiceProvider {
+  user: any;
   stars = [];
+  unknowPostion = true;
+  postion: any;
+  status = "";
   public static readonly SERVER = "http://localhost:8000/api/";
   // parameter: ReplaySubject<string> = new ReplaySubject<string>(1);
   races = [
@@ -71,16 +79,44 @@ export class DataServiceProvider {
   constructor(
     public http: Http,
     public storage: Storage,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public events: Events,
+    public geolocation: Geolocation
   ) {
-    // this.storage.get("user").then(param => {
-    //   if (param) {
-    //     this.parameter.next(param);
-    //   } else {
-    //     console.log("1 error parameter user data service");
-    //   }
-    //   console.log("2 error parameter user data service");
-    // });
+    this.getUserLocalStorage().then(userD => {
+      this.user = userD;
+    });
+  }
+  logOut() {
+    this.setUserLocalData();
+  }
+
+  private setUserLocal(user = null) {
+    this.storage
+      .set("user", user)
+      .then(_ => {
+        this.user = user;
+        this.events.publish("user:changeStatus");
+        if (user) this.showNotification("Bienvenido", 3000, false);
+      })
+      .catch(error => {
+        this.showNotification("Ha ocurrido un error" + error);
+      });
+  }
+
+  setUserLocalData(token = null) {
+    this.storage
+      .set("token", token)
+      .then(_ => {
+        if (token) this.setUserLocal(this.parseJwt(token));
+        else this.setUserLocal();
+      })
+      .catch(error => console.log(error));
+  }
+
+  getUser() {
+    if (this.user) return this.user;
+    return null;
   }
 
   getUserLocalStorage() {
@@ -103,10 +139,11 @@ export class DataServiceProvider {
       })
       .catch(error => {
         console.log("error leyendo el token" + error);
-        this.showNotification("Ha ocurrido un error inesperado!");
+        this.showNotification("Ha ocurrido un error inesperado!" + error);
         return null;
       });
   }
+
   getData(url) {
     let headers = new Headers({
       Authorization: this.getUserLocalToken(),
@@ -175,6 +212,50 @@ export class DataServiceProvider {
     return tmpRace;
   }
 
+  updateStatus(status = true) {
+    if (!status) this.status = "Ocupado";
+    else this.status = "Disponible";
+    this.updatePostionStatus();
+  }
+
+  updatePostionStatus() {
+    if (this.user && this.postion) {
+      let objPostionStatus: any;
+      if (this.user.roll == "chofer") {
+        objPostionStatus = {
+          id: this.user.id,
+          latitude: this.postion.coords.latitude,
+          longitude: this.postion.coords.longitude,
+          status: this.status
+        };
+      } else {
+        objPostionStatus = {
+          id: this.user.id,
+          latitude: this.postion.coords.latitude,
+          longitude: this.postion.coords.longitude
+        };
+      }
+      console.log(objPostionStatus);
+      // this.postData("postion", objPostionStatus);
+    }
+  }
+
+  subscribePostion() {
+    if (this.unknowPostion)
+      Observable.timer(3000, 60000).subscribe(_ => {
+        this.geolocation
+          .getCurrentPosition()
+          .then(postion => {
+            this.unknowPostion = false;
+            this.postion = postion;
+            this.updatePostionStatus();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      });
+  }
+
   showNotification(message, time = 3000, pageChance = true) {
     let toast = this.toastCtrl.create({
       message: message,
@@ -184,5 +265,11 @@ export class DataServiceProvider {
       dismissOnPageChange: pageChance
     });
     toast.present();
+  }
+
+  parseJwt(token) {
+    var base64Url = token.split(".")[1];
+    var base64 = base64Url.replace("-", "+").replace("_", "/");
+    return JSON.parse(window.atob(base64));
   }
 }

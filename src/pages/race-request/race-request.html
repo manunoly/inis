@@ -5,4 +5,13 @@
 
 <ion-content no-padding>
   <div id="map"></div>
+  <ion-footer offset-2 col-8>
+    <ion-toolbar text-center transparent>
+      <button full color="dark" [disabled]="endRace" (click)="addMarker()" icon-left>
+        <ion-icon name="navigate"></ion-icon>
+        Fin</button>
+      <button full color="dark" [disabled]="!endRace" (click)="raceRequest()" icon-left>
+        <ion-icon name="car"></ion-icon>Solicitar</button>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>

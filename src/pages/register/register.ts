@@ -38,9 +38,7 @@ export class RegisterPage {
     });
   }
 
-  ionViewDidLoad() {
-    console.log("ionViewDidLoad RegisterPage");
-  }
+  ionViewDidLoad() {}
 
   newClient() {
     this.submitF = true;

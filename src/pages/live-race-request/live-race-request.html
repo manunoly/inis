@@ -1,0 +1,18 @@
+<ion-navbar>
+  <ion-title>Carreras Demandadas</ion-title>
+</ion-navbar>
+
+<ion-content text-center>
+  <ion-toolbar transparent>
+    <ion-title color="primary">Estado</ion-title>
+    <div offset-sm-4 col-sm-4>
+      <ion-list text-wrap>
+        <ion-item style="background-color: transparent">
+          <span item-start class="dot"></span>
+          <ion-label>Disponible </ion-label>
+          <ion-toggle [(ngModel)]="disponible" (ionChange)="disponibleM()" color="secondary"></ion-toggle>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ion-toolbar>
+</ion-content>

@@ -41,6 +41,12 @@ export class MyApp {
       pageName: "ListRaceServicePage",
       icon: "calendar",
       fav: false
+    },
+    {
+      title: "Datos Personales",
+      pageName: "EditProfilePage",
+      icon: "person",
+      fav: false
     }
   ];
 
@@ -52,9 +58,22 @@ export class MyApp {
       fav: false
     },
     {
+      title: "Carreras Demandadas",
+      pageName: "LiveRaceRequestPage",
+      icon: "car",
+      fav: false
+    },
+
+    {
       title: "Mis Carreras",
       pageName: "ListRacePage",
       icon: "calendar",
+      fav: false
+    },
+    {
+      title: "Datos Personales",
+      pageName: "EditProfilePage",
+      icon: "person",
       fav: false
     }
   ];
@@ -64,37 +83,44 @@ export class MyApp {
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     public storage: Storage,
-    public events: Events
+    public events: Events,
+    public dataS: DataServiceProvider
   ) {
     platform.ready().then(() => {
       statusBar.styleDefault();
       splashScreen.hide();
       this.checkUser();
+      this.dataS.getUserLocalStorage().then(userD => {
+        this.user = userD;
+        this.userStatus();
+      });
     });
   }
 
   checkUser() {
     this.events.subscribe("user:changeStatus", () => {
-      this.storage.get("user").then(user => {
-        if (user) this.user = user;
-        else this.user = null;
+      this.dataS.getUserLocalStorage().then(userD => {
+        this.user = userD;
         this.nav.setRoot("HomePage");
-        console.log("load user data in constructor app.components");
-        console.log(user);
+        this.userStatus();
       });
     });
-    this.events.publish("user:changeStatus");
+    // this.events.publish("user:changeStatus");
   }
 
+  userStatus() {
+    if (this.user) {
+      if (this.user.roll == "chofer") this.dataS.updateStatus();
+      else this.dataS.updateStatus(false);
+    }
+  }
   loginUser() {
     console.log("LoginPage");
   }
 
   signOut() {
-    this.storage.set("user", null).then(_ => {
-      this.events.publish("user:changeStatus");
-      console.log("logout");
-    });
+    this.dataS.setUserLocalData();
+    console.log("logout");
   }
 
   openPage(page: PageInterface) {
