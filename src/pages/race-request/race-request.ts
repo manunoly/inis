@@ -1,6 +1,12 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
-import { Geolocation, Geoposition } from "@ionic-native/geolocation";
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  AlertController
+} from "ionic-angular";
+import { Geolocation } from "@ionic-native/geolocation";
+import { DataServiceProvider } from "./../../providers/data-service/data-service";
 /* import {
   GoogleMaps,
   GoogleMap,
@@ -21,9 +27,14 @@ export class RaceRequestPage {
   map: any;
   startRace: any;
   endRace: any;
+  raceObj = {};
+  raceAsigne: boolean = false;
+  spinner: any;
   // directionsDisplay = new google.maps.DirectionsRenderer();
   // bounds: any;
   constructor(
+    private alertCtrl: AlertController,
+    private dataS: DataServiceProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
     public geolocation: Geolocation /* ,
@@ -31,8 +42,11 @@ export class RaceRequestPage {
   ) {}
 
   ionViewDidLoad() {
-    this.createMap();
-    // this.getPosicion();
+    if (this.dataS.getUser()) {
+      this.spinner = this.dataS.showSpinner();
+      this.spinner.present();
+      this.createMap();
+    } else this.navCtrl.push("HomePage");
   }
 
   createMap() {
@@ -46,7 +60,8 @@ export class RaceRequestPage {
         let mapOptions = {
           center: latLng,
           zoom: 15,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          streetViewControl: false
         };
 
         this.map = new google.maps.Map(
@@ -65,15 +80,20 @@ export class RaceRequestPage {
         });
         this.addInfoWindow(this.startRace, "<h3>Inicio</h3>");
         this.startRace.setMap(this.map);
-        console.log(this.startRace.position.lat());
         // let loc = new google.maps.LatLng(
         //   marker.position.lat(),
         //   marker.position.lng()
+        if (this.spinner) this.spinner.dismiss();
       })
       .catch(error => {
+        if (this.spinner) this.spinner.dismiss();
+        this.dataS.showNotification(
+          "Favor revise su conexión y active su Geolocalización"
+        );
         console.log(error);
       });
   }
+
   addMarker() {
     this.endRace = new google.maps.Marker({
       draggable: true,
@@ -94,9 +114,95 @@ export class RaceRequestPage {
       infoWindow.open(this.map, marker);
     });
   }
-  raceRequest(){
-    console.log(this.startRace.position.lat());
-    console.log(this.endRace.position.lat());
+  raceRequest() {
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+      {
+        origins: [this.startRace.getPosition()],
+        destinations: [this.endRace.getPosition()],
+        travelMode: "DRIVING",
+        avoidTolls: true
+      },
+      (response, status) => {
+        if (status == "OK") {
+          this.raceObj["from"] = response.originAddresses[0];
+          this.raceObj["fromLat"] = this.startRace.getPosition().lat();
+          this.raceObj["fromLong"] = this.startRace.getPosition().lng();
+          this.raceObj["to"] = response.destinationAddresses[0];
+          this.raceObj["toLat"] = this.endRace.getPosition().lat();
+          this.raceObj["toLong"] = this.endRace.getPosition().lng();
+          this.raceObj["distance"] = response.rows[0].elements[0].distance.text;
+          this.raceObj["duration"] = response.rows[0].elements[0].duration.text;
+          /**
+           * TODO: get Price between distance;
+           */
+          let price = 0.5;
+          this.raceObj["price"] =
+            Number(
+              this.raceObj["distance"].split(" ", 1)[0].replace(",", ".")
+            ) * price;
+          this.raceObj["passenger_id"] = this.dataS.getUser().id;
+          this.raceObj["passenger_name"] = this.dataS.getUser().name;
+          let msgConfirm =
+            this.raceObj["from"].split(",", 1) +
+            " => " +
+            this.raceObj["to"].split(",", 1) +
+            "<br>" +
+            " Precio Estimado " +
+            this.raceObj["price"] +
+            "<br>" +
+            " Distancia " +
+            this.raceObj["distance"] +
+            " => " +
+            this.raceObj["duration"];
+
+          let alert = this.alertCtrl.create({
+            title: "Verificar Datos",
+            message: msgConfirm,
+            // message: JSON.stringify(this.raceObj),
+            buttons: [
+              {
+                text: "Cancelar",
+                role: "cancel",
+                handler: () => {
+                  this.dataS.showNotification("No ha realizado la Solicitud!");
+                }
+              },
+              {
+                text: "Solicitar",
+                handler: () => {
+                  /**
+                   * TODO: Post data to request reservation
+                   * TODO: GET Race ID
+                   */
+                  this.raceObj["id"] = 12;
+                  console.log(this.raceObj);
+                }
+              }
+            ]
+          });
+          alert.present();
+        } else
+          this.dataS.showNotification(
+            "Error al conectar con Google Maps" + status
+          );
+      }
+    );
+
+    // let startRaceStreet = this.getStreetAddres(this.startRace);
+    // let endRaceStreet = this.getStreetAddres(this.endRace);
+    // let objRaceRequest = {};
+    // this.dataS.postData("reserver", {});
+  }
+
+  getStreetAddres(marker) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ location: marker.getPosition() }, (results, status) => {
+      if (status === "OK") {
+        return results[0].formatted_address;
+      }
+    });
+    return;
   }
   /* calculateAndDisplayRoute() {
     this.directionsService.route(
@@ -114,63 +220,4 @@ export class RaceRequestPage {
       }
     );
   } */
-  raceRequest1(){
-    var geocoder = new google.maps.Geocoder();
-
-  }
-  getPosicion(): any {
-    // let position = Observable.fromPromise(this.geolocation.getCurrentPosition());
-    // position.subscribe(pos=>{
-    //   console.log(pos);
-    // })
-    this.geolocation
-      .getCurrentPosition()
-      .then(response => {
-        this.loadMap(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
-  loadMap(postion: Geoposition) {
-    let latitude = postion.coords.latitude;
-    let longitud = postion.coords.longitude;
-    console.log(latitude, longitud);
-
-    // create a new map by passing HTMLElement
-    let element: HTMLElement = document.getElementById("map");
-    let myPosition: any = new google.maps.LatLng(latitude, longitud);
-
-    // create CameraPosition
-    let position: any = {
-      target: myPosition,
-      zoom: 18,
-      tilt: 30
-    };
-    this.map = new google.maps.Map(element, position);
-
-    // create LatLng object
-    // let myPosition: LatLng = new LatLng(latitude, longitud);
-
-    /*  this.map
-      .one(google.maps.MAP_READY)
-      .then(() => {
-        console.log("Map is ready!");
-
-        // move the map's camera to position
-        this.map.moveCamera(position);
-
-        // create new marker
-        let markerOptions: any = {
-          position: myPosition,
-          title: "Inicio Carrera"
-        };
-        this.map.addMarker(markerOptions);
-      })
-      .catch(error => {
-        console.log("Error con el marcado en google maps");
-        console.log(error);
-      }); */
-  }
 }

@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 import { Headers, RequestOptions } from "@angular/http";
+
 import {
   Platform,
-  ModalController,
-  AlertController,
   ToastController,
-  Events
+  Events,
+  LoadingController
 } from "ionic-angular";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/toPromise";
@@ -81,7 +81,8 @@ export class DataServiceProvider {
     public storage: Storage,
     public toastCtrl: ToastController,
     public events: Events,
-    public geolocation: Geolocation
+    public geolocation: Geolocation,
+    public loadingCtrl: LoadingController
   ) {
     this.getUserLocalStorage().then(userD => {
       this.user = userD;
@@ -219,29 +220,21 @@ export class DataServiceProvider {
   }
 
   updatePostionStatus() {
-    if (this.user && this.postion) {
+    if (this.user && this.postion && this.user.roll == "chofer") {
       let objPostionStatus: any;
-      if (this.user.roll == "chofer") {
-        objPostionStatus = {
-          id: this.user.id,
-          latitude: this.postion.coords.latitude,
-          longitude: this.postion.coords.longitude,
-          status: this.status
-        };
-      } else {
-        objPostionStatus = {
-          id: this.user.id,
-          latitude: this.postion.coords.latitude,
-          longitude: this.postion.coords.longitude
-        };
-      }
+      objPostionStatus = {
+        id: this.user.id,
+        latitude: this.postion.coords.latitude,
+        longitude: this.postion.coords.longitude,
+        status: this.status
+      };
       console.log(objPostionStatus);
       // this.postData("postion", objPostionStatus);
     }
   }
 
   subscribePostion() {
-    if (this.unknowPostion)
+    if (this.unknowPostion && this.user.roll == "chofer")
       Observable.timer(3000, 60000).subscribe(_ => {
         this.geolocation
           .getCurrentPosition()
@@ -265,6 +258,20 @@ export class DataServiceProvider {
       dismissOnPageChange: pageChance
     });
     toast.present();
+  }
+
+  showSpinner(time = 10000, msg = "manuel") {
+    let contenido =
+      '<img style="height: 50%" alt="Inis-Taxi" src="assets/img/logo-inis.png"/> <div style="text-align: center; vertical-align: middle;">' +
+      msg +
+      "</div>";
+    let loading = this.loadingCtrl.create({
+      spinner: "hide",
+      content: contenido,
+      duration: time
+    });
+
+    return loading;
   }
 
   parseJwt(token) {

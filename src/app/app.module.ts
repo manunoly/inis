@@ -9,6 +9,7 @@ import { MyApp } from "./app.component";
 import { DriverRaceDetailPage } from "./../pages/driver-race-detail/driver-race-detail";
 import { ClientRaceDetailPage } from "./../pages/client-race-detail/client-race-detail";
 import { DataServiceProvider } from "../providers/data-service/data-service";
+import { ConfirmRaceRequestPage } from "./../pages/confirm-race-request/confirm-race-request";
 
 //geolocalizacion
 import { Geolocation } from "@ionic-native/geolocation";
@@ -17,7 +18,12 @@ import { GoogleMaps } from "@ionic-native/google-maps";
 import { IonicStorageModule } from "@ionic/storage";
 
 @NgModule({
-  declarations: [MyApp, DriverRaceDetailPage, ClientRaceDetailPage],
+  declarations: [
+    MyApp,
+    DriverRaceDetailPage,
+    ClientRaceDetailPage,
+    ConfirmRaceRequestPage
+  ],
   imports: [
     BrowserModule,
     HttpModule,
@@ -25,7 +31,12 @@ import { IonicStorageModule } from "@ionic/storage";
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
-  entryComponents: [MyApp, DriverRaceDetailPage, ClientRaceDetailPage],
+  entryComponents: [
+    MyApp,
+    DriverRaceDetailPage,
+    ClientRaceDetailPage,
+    ConfirmRaceRequestPage
+  ],
   providers: [
     StatusBar,
     SplashScreen,
