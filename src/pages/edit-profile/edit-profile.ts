@@ -32,7 +32,6 @@ export class EditProfilePage {
 
   setUserForm(user) {
     if (user) {
-      console.log(user);
       this.roll = user.roll;
       if (user.roll == "cliente") {
         this.client = this.formBuilder.group({

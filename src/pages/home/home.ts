@@ -7,22 +7,20 @@ import {
 } from "ionic-angular";
 import { Geolocation } from "@ionic-native/geolocation";
 import { DataServiceProvider } from "./../../providers/data-service/data-service";
-@IonicPage({
-  // name: 'inicio',
-  // segment: 'inicio'
-})
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+
+@IonicPage({})
 @Component({
   selector: "page-home",
   templateUrl: "home.html"
 })
 export class HomePage {
-
   constructor(
+    private http: HttpClient,
     public geolocation: Geolocation,
     private dataS: DataServiceProvider
   ) {}
   ionViewDidLoad() {
-    console.log("Cargando Home");
     this.geolocation
       .getCurrentPosition()
       .then(postion => {
@@ -33,7 +31,7 @@ export class HomePage {
           "Por favor active su Geolocalización y verifique su conexión." +
             "\n" +
             error.message,
-          4000,
+          5000,
           false
         );
       });

@@ -11,7 +11,6 @@ import { DataServiceProvider } from "./../../providers/data-service/data-service
 export class LoginPage {
   private login: FormGroup;
   private msg = "";
-  submitF = false;
   constructor(
     private dataS: DataServiceProvider,
     public navCtrl: NavController,
@@ -39,6 +38,20 @@ export class LoginPage {
     });
   }
   logForm() {
+    console.log("inicio sesion");
+    this.dataS
+      .login("login", this.login.value)
+      .then(res => {
+        if (res["token"]) this.dataS.setUserLocalData(res["token"]);
+        console.log(res);
+      })
+      .catch(error => {
+        if (error.statusText) this.msg = error.statusText;
+        setTimeout(() => {
+          this.msg = "";
+        }, 15000);
+        console.log(error);
+      }); /*
     let returData: any;
     if (this.login.value.email == "manuel@as") {
       returData = {
@@ -51,7 +64,7 @@ export class LoginPage {
           "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiQW5kcmVzIEluaWVzdGEiLCJwaG9uZSI6IjcyNzI3NDg5Iiwic3RhdHVzIjoiMSIsImxhdGl0dWRlIjoiMTIiLCJsb25naXR1ZGUiOiIxMyIsImVtYWlsX2FkZHJlc3MiOiJhbmR5QGdtYWlsLmNvbSIsInJvbGwiOiJjaG9mZXIiLCJqdGkiOiI1NmVlN2U5NC04MGE3LTQ3YWQtYmYxNC0xZTZiY2QxZmMyMjUiLCJpYXQiOjE1MDk2NjA1ODgsImV4cCI6MTUwOTY2NDE4OH0.FjXh2l8rpLRE8LUS8-lIml1h-9wT4OuKJcUN_WDsAvU"
       };
     }
-    this.dataS.setUserLocalData(returData.token);
+    this.dataS.setUserLocalData(returData.token); */
   }
 
   ionViewDidLoad() {

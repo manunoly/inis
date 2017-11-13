@@ -22,6 +22,12 @@
             <a item-end (click)="forgetPassword()"> Olvidé mi contraseña!</a>
           </ion-item>
           <br>
+          <div *ngIf="msg" text-center>
+            <br>
+            <h2>
+              {{msg}}
+            </h2>
+          </div>
           <div offset-sm-2 col-sm-8>
             <button round full text-center ion-button type="submit" [disabled]="!login.valid">Ingresar </button>
           </div>
@@ -32,11 +38,5 @@
         </ion-col>
       </ion-row>
     </form>
-  </div>
-  <div [hidden]="!submitF" text-center>
-    <br>
-    <h2>
-      {{msg}}
-    </h2>
   </div>
 </ion-content>

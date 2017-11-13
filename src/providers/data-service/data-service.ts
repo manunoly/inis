@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Http, Response } from "@angular/http";
-import { Headers, RequestOptions } from "@angular/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import {
   Platform,
@@ -27,6 +26,8 @@ export class DataServiceProvider {
   unknowPostion = true;
   postion: any;
   status = "";
+  objPostionObservable: any;
+  // public static readonly SERVER = "http://localhost/";
   public static readonly SERVER = "http://localhost:8000/api/";
   // parameter: ReplaySubject<string> = new ReplaySubject<string>(1);
   races = [
@@ -77,7 +78,7 @@ export class DataServiceProvider {
     }
   ];
   constructor(
-    public http: Http,
+    private http: HttpClient,
     public storage: Storage,
     public toastCtrl: ToastController,
     public events: Events,
@@ -99,6 +100,9 @@ export class DataServiceProvider {
         this.user = user;
         this.events.publish("user:changeStatus");
         if (user) this.showNotification("Bienvenido", 3000, false);
+        else {
+          this.unknowPostion = true;
+        }
       })
       .catch(error => {
         this.showNotification("Ha ocurrido un error" + error);
@@ -146,23 +150,96 @@ export class DataServiceProvider {
   }
 
   getData(url) {
-    let headers = new Headers({
-      Authorization: this.getUserLocalToken(),
-      "Content-Type": "application/json, charset=UTF-8"
-    });
-    let options = new RequestOptions({ headers: headers });
-    return this.http.get(DataServiceProvider.SERVER + url, options).toPromise();
+    return this.getUserLocalToken()
+      .then(token => {
+        if (token) {
+          let options = new HttpHeaders();
+          options.set("Authorization", token);
+          options.set("Content-Type", "application/json");
+          return this.http
+            .get(DataServiceProvider.SERVER + url, {
+              headers: options
+            })
+            .toPromise();
+        } else {
+          return new Promise(function(resolve, reject) {
+            setTimeout(function() {
+              return "{status:400, message:'No Identificado'}";
+            });
+          });
+        }
+      })
+      .catch(error => {
+        console.log("error leyendo el token" + error);
+        this.showNotification("Ha ocurrido un error inesperado!" + error);
+        return new Promise(function(resolve, reject) {
+          setTimeout(function() {
+            return "{status:400, message:'No Identificado'}";
+          });
+        });
+      });
+  }
+  login(url, params) {
+    let options = new HttpHeaders();
+    options.set("Content-Type", "application/json");
+    return this.http
+      .post(DataServiceProvider.SERVER + url, params, {
+        headers: options
+      })
+      .toPromise();
   }
 
   postData(url = null, params: any) {
-    let headers = new Headers({
-      Authorization: this.getUserLocalToken(),
-      "Content-Type": "application/x-www-form-urlencoded"
-    });
-    let options = new RequestOptions({ headers: headers });
-    return this.http
-      .post(DataServiceProvider.SERVER + url, params, options)
-      .toPromise();
+    return this.getUserLocalToken()
+      .then(token => {
+        if (token) {
+          let options = new HttpHeaders();
+          options.set("Authorization", token);
+          options.set("Content-Type", "application/json");
+          return this.http
+            .post(DataServiceProvider.SERVER + url, params, {
+              headers: options
+            })
+            .toPromise();
+        } else {
+          return "{status:400, message:'No Identificado'}";
+        }
+      })
+      .catch(error => {
+        this.showNotification("Ha ocurrido un error inesperado!" + error);
+        return "{status:400, message:'No Identificado'}";
+      });
+  }
+
+  putData(url = null, params: any) {
+    return this.getUserLocalToken()
+      .then(token => {
+        if (token) {
+          let options = new HttpHeaders();
+          options.set("Authorization", token);
+          options.set("Content-Type", "application/json");
+          return this.http
+            .put(DataServiceProvider.SERVER + url, params, {
+              headers: options
+            })
+            .toPromise();
+        } else {
+          return new Promise(function(resolve, reject) {
+            setTimeout(function() {
+              return "{status:400, message:'No Identificado'}";
+            });
+          });
+        }
+      })
+      .catch(error => {
+        console.log("error leyendo el token" + error);
+        this.showNotification("Ha ocurrido un error inesperado!" + error);
+        return new Promise(function(resolve, reject) {
+          setTimeout(function() {
+            return "{status:400, message:'No Identificado'}";
+          });
+        });
+      });
   }
 
   getRace() {
@@ -234,8 +311,9 @@ export class DataServiceProvider {
   }
 
   subscribePostion() {
-    if (this.unknowPostion && this.user.roll == "chofer")
-      Observable.timer(3000, 60000).subscribe(_ => {
+    if (this.unknowPostion && this.user && this.user.roll == "chofer") {
+      this.objPostionObservable = Observable.timer(3000, 60000);
+      this.objPostionObservable.subscribe(_ => {
         this.geolocation
           .getCurrentPosition()
           .then(postion => {
@@ -247,9 +325,10 @@ export class DataServiceProvider {
             console.log(error);
           });
       });
+    }
   }
 
-  showNotification(message, time = 3000, pageChance = true) {
+  showNotification(message, time = 5000, pageChance = true) {
     let toast = this.toastCtrl.create({
       message: message,
       duration: time,
@@ -260,7 +339,7 @@ export class DataServiceProvider {
     toast.present();
   }
 
-  showSpinner(time = 10000, msg = "manuel") {
+  showSpinner(time = 10000, msg = "") {
     let contenido =
       '<img style="height: 50%" alt="Inis-Taxi" src="assets/img/logo-inis.png"/> <div style="text-align: center; vertical-align: middle;">' +
       msg +

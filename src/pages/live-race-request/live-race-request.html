@@ -18,6 +18,7 @@
       <ion-list>
         <ion-list-header no-lines text-center>
           Carrera Demandadas
+          <button float-end ion-button clear (click)="findLiveRace()">Buscar</button>
         </ion-list-header>
         <ion-item *ngFor="let race of races" text-wrap>
           <ion-row>

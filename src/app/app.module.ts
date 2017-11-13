@@ -3,7 +3,8 @@ import { ErrorHandler, NgModule } from "@angular/core";
 import { IonicApp, IonicErrorHandler, IonicModule } from "ionic-angular";
 import { SplashScreen } from "@ionic-native/splash-screen";
 import { StatusBar } from "@ionic-native/status-bar";
-import { HttpModule } from "@angular/http";
+// import { HttpModule } from "@angular/http";
+import {HttpClientModule} from '@angular/common/http';
 
 import { MyApp } from "./app.component";
 import { DriverRaceDetailPage } from "./../pages/driver-race-detail/driver-race-detail";
@@ -26,7 +27,7 @@ import { IonicStorageModule } from "@ionic/storage";
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],
