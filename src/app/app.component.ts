@@ -110,7 +110,7 @@ export class MyApp {
 
   userStatus() {
     if (this.user) {
-      if (this.user.roll == "chofer") this.dataS.updateStatus();
+      if (this.user.roll == "Chofer") this.dataS.updateStatus();
       else this.dataS.updateStatus(false);
     }
   }

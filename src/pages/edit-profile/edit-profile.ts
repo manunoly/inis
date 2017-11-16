@@ -9,7 +9,7 @@ import { DataServiceProvider } from "./../../providers/data-service/data-service
   templateUrl: "edit-profile.html"
 })
 export class EditProfilePage {
-  roll = "cliente";
+  roll = "Cliente";
   submitF = false;
   private client: FormGroup;
   private driver: FormGroup;
@@ -23,7 +23,7 @@ export class EditProfilePage {
     if (userD) {
       this.setUserForm(userD);
     } else {
-      this.setUserForm({ roll: "cliente" });
+      this.setUserForm({ roll: "Cliente" });
       this.navCtrl.push("HomePage");
     }
   }
@@ -33,7 +33,7 @@ export class EditProfilePage {
   setUserForm(user) {
     if (user) {
       this.roll = user.roll;
-      if (user.roll == "cliente") {
+      if (user.roll == "Cliente") {
         this.client = this.formBuilder.group({
           name: [user.name, Validators.required],
           phone: [user.phone, Validators.required],
@@ -50,7 +50,7 @@ export class EditProfilePage {
           driverCapacity: ["", Validators.required],
           driverComodidades: ["", Validators.required]
         });
-      } else if (user.roll == "chofer") {
+      } else if (user.roll == "Chofer") {
         this.driver = this.formBuilder.group({
           driverName: [user.name, Validators.required],
           driverPhone: [user.phone, Validators.required],

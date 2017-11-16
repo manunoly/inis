@@ -6,7 +6,7 @@
   <!-- <ion-row offset-sm-2 col-sm-4 radio-group>
     <ion-col col-6>
       <ion-item no-lines>
-        <ion-thumbnail><img src="assets/img/cliente.png"></ion-thumbnail>
+        <ion-thumbnail><img src="assets/img/Cliente.png"></ion-thumbnail>
       </ion-item>
     </ion-col>
     <ion-col col-6>
@@ -43,7 +43,7 @@
             <ion-item>
               <ion-label floating clearInput icon-left>
                 <ion-icon name="at"></ion-icon>Correo</ion-label>
-              <ion-input type="email" formControlName="email"></ion-input>
+              <ion-input type="email" formControlName="email_address"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label floating clearInput icon-left>
@@ -71,22 +71,22 @@
             <ion-item>
               <ion-label floating clearInput icon-left>
                 <ion-icon name="person"></ion-icon>Nombre</ion-label>
-              <ion-input type="text" formControlName="driverName"></ion-input>
+              <ion-input type="text" formControlName="name"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label floating clearInput icon-left>
                 <ion-icon name="call"></ion-icon>Teléfono</ion-label>
-              <ion-input type="number" formControlName="driverPhone"></ion-input>
+              <ion-input type="number" formControlName="phone"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label floating clearInput icon-left>
                 <ion-icon name="at"></ion-icon>Correo</ion-label>
-              <ion-input type="email" formControlName="driverEmail"></ion-input>
+              <ion-input type="email" formControlName="email_address"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label floating clearInput icon-left>
                 <ion-icon name="unlock"></ion-icon>Contraseña</ion-label>
-              <ion-input type="password" formControlName="driverPassword"></ion-input>
+              <ion-input type="password" formControlName="password"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label floating clearInput icon-left>
@@ -96,26 +96,26 @@
             <ion-item>
               <ion-label floating clearInput icon-left>
                 <ion-icon name="car"></ion-icon>Marca del Auto</ion-label>
-              <ion-input type="text" formControlName="driverCar"></ion-input>
+              <ion-input type="text" formControlName="marca"></ion-input>
             </ion-item>
             <div col-6>
               <ion-item>
                 <ion-label floating clearInput icon-left>
                   <ion-icon name="time"></ion-icon>Modelo</ion-label>
-                <ion-input type="number" formControlName="driverCarYear"></ion-input>
+                <ion-input type="number" formControlName="modelo"></ion-input>
               </ion-item>
             </div>
             <div col-6>
               <ion-item>
                 <ion-label floating clearInput icon-left>
                   <ion-icon name="time"></ion-icon>Capacidad</ion-label>
-                <ion-input type="number" formControlName="driverCapacity"></ion-input>
+                <ion-input type="number" formControlName="capacity"></ion-input>
               </ion-item>
             </div>
             <ion-item>
               <ion-label floating clearInput icon-left>
                 <ion-icon name="time"></ion-icon>Comodidades</ion-label>
-              <ion-textarea type="text" formControlName="driverComodidades"></ion-textarea>
+              <ion-textarea type="text" formControlName="facilities"></ion-textarea>
             </ion-item>
             <br>
             <div offset-sm-2 col-sm-8>
@@ -127,7 +127,7 @@
       </form>
     </div>
   </div>
-  <div [hidden]="!submitF">
+  <div [hidden]="!submitF" text-center>
     <br>
     <h2>
       Pronto nuestro Call Center le contactará.
@@ -136,6 +136,6 @@
   </div>
 </ion-content>
 
-<!--cliente se almacena el nombre, email, contraseña y teléfono. En caso de
-que sea chofer, se registra el nombre, email, contraseña, teléfono, marca del auto y
+<!--Cliente se almacena el nombre, email, contraseña y teléfono. En caso de
+que sea Chofer, se registra el nombre, email, contraseña, teléfono, marca del auto y
 modelo, capacidades, junto con las comodidades. -->

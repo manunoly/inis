@@ -189,10 +189,10 @@ export class DataServiceProvider {
       .toPromise();
   }
 
-  postData(url = null, params: any) {
+  postData(url = null, params: any, login = false) {
     return this.getUserLocalToken()
       .then(token => {
-        if (token) {
+        if (token || login) {
           let options = new HttpHeaders();
           options.set("Authorization", token);
           options.set("Content-Type", "application/json");
@@ -297,7 +297,7 @@ export class DataServiceProvider {
   }
 
   updatePostionStatus() {
-    if (this.user && this.postion && this.user.roll == "chofer") {
+    if (this.user && this.postion && this.user.roll == "Chofer") {
       let objPostionStatus: any;
       objPostionStatus = {
         id: this.user.id,
@@ -311,7 +311,7 @@ export class DataServiceProvider {
   }
 
   subscribePostion() {
-    if (this.unknowPostion && this.user && this.user.roll == "chofer") {
+    if (this.unknowPostion && this.user && this.user.roll == "Chofer") {
       this.objPostionObservable = Observable.timer(3000, 60000);
       this.objPostionObservable.subscribe(_ => {
         this.geolocation
