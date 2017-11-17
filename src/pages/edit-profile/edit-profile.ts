@@ -9,7 +9,7 @@ import { DataServiceProvider } from "./../../providers/data-service/data-service
   templateUrl: "edit-profile.html"
 })
 export class EditProfilePage {
-  roll = "Cliente";
+  type = "Cliente";
   submitF = false;
   private client: FormGroup;
   private driver: FormGroup;
@@ -19,11 +19,52 @@ export class EditProfilePage {
     private formBuilder: FormBuilder,
     private dataS: DataServiceProvider
   ) {
+    this.dataS
+    .getData("driver/1")
+    .then(res => {
+      console.log(res);
+      // this.setUserForm(res);
+    })
+    .catch(error => {
+      if (error.statusText) this.dataS.showNotification(error.statusText);
+      console.log(error);
+    });
+    this.client = this.formBuilder.group({
+      name: ["", Validators.required],
+      phone: ["", Validators.required],
+      email_address: ["", Validators.required],
+      password: [""]
+    });
+    this.driver = this.formBuilder.group({
+      name: ["", Validators.required],
+      phone: ["", Validators.required],
+      email_address: ["", Validators.required],
+      password: [""],
+      marca: ["", Validators.required],
+      driverCarYear: ["", Validators.required],
+      modelo: ["", Validators.required],
+      capacity: ["", Validators.required],
+      facilities: ["", Validators.required]
+    });
     let userD = this.dataS.getUser();
     if (userD) {
-      this.setUserForm(userD);
+      if (userD.type == "CLiente") this.setUserForm(userD);
+      else if (userD.type == "Chofer") {
+        // let spinner = this.dataS.showSpinner();
+        // spinner.present();
+        this.dataS
+          .getData("driver/" + userD.id)
+          .then(res => {
+            console.log(res);
+            // this.setUserForm(res);
+          })
+          .catch(error => {
+            if (error.statusText) this.dataS.showNotification(error.statusText);
+            console.log(error);
+          });
+      }
     } else {
-      this.setUserForm({ roll: "Cliente" });
+      this.setUserForm({ type: "Cliente" });
       this.navCtrl.push("HomePage");
     }
   }
@@ -32,40 +73,41 @@ export class EditProfilePage {
 
   setUserForm(user) {
     if (user) {
-      this.roll = user.roll;
-      if (user.roll == "Cliente") {
+      this.type = user.type;
+      if (user.type == "Cliente") {
         this.client = this.formBuilder.group({
           name: [user.name, Validators.required],
           phone: [user.phone, Validators.required],
-          email: [user.email_address, Validators.required],
-          password: ["", Validators.required]
+          email_address: [user.email_address, Validators.required],
+          password: [""]
         });
         this.driver = this.formBuilder.group({
-          driverName: ["", Validators.required],
-          driverPhone: ["", Validators.required],
-          driverEmail: ["", Validators.required],
-          driverPassword: ["", Validators.required],
-          driverCar: ["", Validators.required],
+          name: ["", Validators.required],
+          phone: ["", Validators.required],
+          email_address: ["", Validators.required],
+          password: [""],
+          marca: ["", Validators.required],
           driverCarYear: ["", Validators.required],
-          driverCapacity: ["", Validators.required],
-          driverComodidades: ["", Validators.required]
+          modelo: ["", Validators.required],
+          capacity: ["", Validators.required],
+          facilities: ["", Validators.required]
         });
-      } else if (user.roll == "Chofer") {
+      } else if (user.type == "Chofer") {
         this.driver = this.formBuilder.group({
           driverName: [user.name, Validators.required],
           driverPhone: [user.phone, Validators.required],
           driverEmail: [user.email_address, Validators.required],
           driverPassword: ["", Validators.required],
-          driverCar: [user.marca, Validators.required],
-          driverCarYear: [user.modelo, Validators.required],
-          driverCapacity: [user.capacity, Validators.required],
-          driverComodidades: [user.facilities, Validators.required]
+          marca: [user.marca, Validators.required],
+          modelo: [user.modelo, Validators.required],
+          capacity: [user.capacity, Validators.required],
+          facilities: [user.facilities, Validators.required]
         });
         this.client = this.formBuilder.group({
           name: ["", Validators.required],
           phone: ["", Validators.required],
-          email: ["", Validators.required],
-          password: ["", Validators.required]
+          email_address: ["", Validators.required],
+          password: [""]
         });
       }
     }

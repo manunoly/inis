@@ -40,7 +40,7 @@ export class LoginPage {
   logForm() {
     console.log("inicio sesion");
     this.dataS
-      .login("login", this.login.value)
+      .postData("login", this.login.value)
       .then(res => {
         if (res["token"]) this.dataS.setUserLocalData(res["token"]);
         console.log(res);

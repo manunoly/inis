@@ -16,7 +16,7 @@
     </ion-col>
   </ion-row> -->
   <div [hidden]="submitF">
-    <ion-row offset-sm-4 col-sm-4 radio-group [(ngModel)]="roll">
+    <ion-row offset-sm-4 col-sm-4 radio-group [(ngModel)]="type">
       <ion-col text-center>
         <ion-label>Cliente</ion-label>
         <ion-radio value="client" checked></ion-radio>
@@ -26,7 +26,7 @@
         <ion-radio value="driver"></ion-radio>
       </ion-col>
     </ion-row>
-    <div [hidden]="roll != 'client'">
+    <div [hidden]="type != 'client'">
       <form [formGroup]="client" (ngSubmit)="newClient()">
         <ion-row>
           <ion-col offset-sm-3 col-sm-6>
@@ -64,7 +64,7 @@
         </ion-row>
       </form>
     </div>
-    <div [hidden]="roll != 'driver'">
+    <div [hidden]="type != 'driver'">
       <form [formGroup]="driver" (ngSubmit)="newDriver()">
         <ion-row>
           <ion-col offset-sm-3 col-sm-6>

@@ -149,38 +149,32 @@ export class DataServiceProvider {
       });
   }
 
-  getData(url) {
-    return this.getUserLocalToken()
-      .then(token => {
-        if (token) {
-          let options = new HttpHeaders();
-          options.set("Authorization", token);
-          options.set("Content-Type", "application/json");
-          return this.http
-            .get(DataServiceProvider.SERVER + url, {
-              headers: options
-            })
-            .toPromise();
-        } else {
-          return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              return "{status:400, message:'No Identificado'}";
-            });
-          });
-        }
-      })
-      .catch(error => {
-        console.log("error leyendo el token" + error);
-        this.showNotification("Ha ocurrido un error inesperado!" + error);
-        return new Promise(function(resolve, reject) {
-          setTimeout(function() {
-            return "{status:400, message:'No Identificado'}";
-          });
+  getData(url = null) {
+    let token = "";
+    if (this.user && this.user.token != null) token = this.user.token;
+    else {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          return "{status:401, statusText:'Usted no esta identificado'}";
         });
       });
-  }
-  login(url, params) {
+    }
+    console.log("get request");
     let options = new HttpHeaders();
+    options.set("Authorization", token);
+    options.set("Content-Type", "application/json");
+    return this.http
+      .get(DataServiceProvider.SERVER + url, {
+        headers: options
+      })
+      .toPromise();
+  }
+
+  postData(url = null, params: any) {
+    let token = "";
+    if (this.user && this.user.token != null) token = this.user.token;
+    let options = new HttpHeaders();
+    options.set("Authorization", token);
     options.set("Content-Type", "application/json");
     return this.http
       .post(DataServiceProvider.SERVER + url, params, {
@@ -189,57 +183,24 @@ export class DataServiceProvider {
       .toPromise();
   }
 
-  postData(url = null, params: any, login = false) {
-    return this.getUserLocalToken()
-      .then(token => {
-        if (token || login) {
-          let options = new HttpHeaders();
-          options.set("Authorization", token);
-          options.set("Content-Type", "application/json");
-          return this.http
-            .post(DataServiceProvider.SERVER + url, params, {
-              headers: options
-            })
-            .toPromise();
-        } else {
-          return "{status:400, message:'No Identificado'}";
-        }
-      })
-      .catch(error => {
-        this.showNotification("Ha ocurrido un error inesperado!" + error);
-        return "{status:400, message:'No Identificado'}";
-      });
-  }
-
   putData(url = null, params: any) {
-    return this.getUserLocalToken()
-      .then(token => {
-        if (token) {
-          let options = new HttpHeaders();
-          options.set("Authorization", token);
-          options.set("Content-Type", "application/json");
-          return this.http
-            .put(DataServiceProvider.SERVER + url, params, {
-              headers: options
-            })
-            .toPromise();
-        } else {
-          return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              return "{status:400, message:'No Identificado'}";
-            });
-          });
-        }
-      })
-      .catch(error => {
-        console.log("error leyendo el token" + error);
-        this.showNotification("Ha ocurrido un error inesperado!" + error);
-        return new Promise(function(resolve, reject) {
-          setTimeout(function() {
-            return "{status:400, message:'No Identificado'}";
-          });
+    let token = "";
+    if (this.user && this.user.token != null) token = this.user.token;
+    else {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          return "{status:401, statusText:'Usted No esta Identificado'}";
         });
       });
+    }
+    let options = new HttpHeaders();
+    options.set("Authorization", token);
+    options.set("Content-Type", "application/json");
+    return this.http
+      .put(DataServiceProvider.SERVER + url, params, {
+        headers: options
+      })
+      .toPromise();
   }
 
   getRace() {
@@ -297,7 +258,7 @@ export class DataServiceProvider {
   }
 
   updatePostionStatus() {
-    if (this.user && this.postion && this.user.roll == "Chofer") {
+    if (this.user && this.postion && this.user.type == "Chofer") {
       let objPostionStatus: any;
       objPostionStatus = {
         id: this.user.id,
@@ -311,7 +272,7 @@ export class DataServiceProvider {
   }
 
   subscribePostion() {
-    if (this.unknowPostion && this.user && this.user.roll == "Chofer") {
+    if (this.unknowPostion && this.user && this.user.type == "Chofer") {
       this.objPostionObservable = Observable.timer(3000, 60000);
       this.objPostionObservable.subscribe(_ => {
         this.geolocation

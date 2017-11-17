@@ -9,8 +9,9 @@ import { DataServiceProvider } from "./../../providers/data-service/data-service
   templateUrl: "register.html"
 })
 export class RegisterPage {
-  roll = "client";
+  type = "client";
   submitF = false;
+  msg = "";
   private client: FormGroup;
   private driver: FormGroup;
   constructor(
@@ -52,23 +53,36 @@ export class RegisterPage {
   newClient() {
     let spinner = this.dataS.showSpinner();
     spinner.present();
-    this.dataS.postData("user", this.client.value, true).then(res => {
+    this.dataS.postData("user", this.client.value).then(res => {
       setTimeout(() => {}, 5000);
       console.log(res);
       if (res) this.submitF = true;
       spinner.dismiss();
+    }).catch(error => {
+      if (error.statusText) this.msg = error.statusText;
+       this.submitF = true;
+      setTimeout(() => {
+        this.msg = "";
+      }, 5000);
+      console.log(error);
     });
-    console.log(this.client.value);
   }
   newDriver() {
     let spinner = this.dataS.showSpinner();
     spinner.present();
-    this.dataS.postData("driver", this.driver.value, true).then(res => {
+    this.dataS.postData("driver", this.driver.value).then(res => {
       setTimeout(() => {}, 5000);
+      console.log("respuesta");
       console.log(res);
       if (res) this.submitF = true;
       spinner.dismiss();
+    }).catch(error => {
+      if (error.statusText) this.msg = error.statusText;
+       this.submitF = true;
+      setTimeout(() => {
+        this.msg = "";
+      }, 5000);
+      console.log(error);
     });
-    console.log(this.driver.value);
   }
 }
