@@ -14,7 +14,7 @@ import { DriverRaceDetailPage } from './../driver-race-detail/driver-race-detail
   templateUrl: "list-race.html"
 })
 export class ListRacePage {
-  user = { type: "Cliente", name: "Andres Iniesta", id: 12 };
+  user = { type: "client", name: "Andres Iniesta", id: 12 };
   races = [
     {
       id: 1,

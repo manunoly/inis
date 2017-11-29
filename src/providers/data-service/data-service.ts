@@ -25,7 +25,7 @@ export class DataServiceProvider {
   stars = [];
   unknowPostion = true;
   postion: any;
-  status = "";
+  status: number;
   objPostionObservable: any;
   // public static readonly SERVER = "http://localhost/";
   public static readonly SERVER = "http://localhost:8000/api/";
@@ -87,6 +87,12 @@ export class DataServiceProvider {
   ) {
     this.getUserLocalStorage().then(userD => {
       this.user = userD;
+      this.storage
+        .get("token")
+        .then(token => {
+          if (token) this.user["token"] = token;
+        })
+        .catch(_ => {});
     });
   }
   logOut() {
@@ -99,8 +105,15 @@ export class DataServiceProvider {
       .then(_ => {
         this.user = user;
         this.events.publish("user:changeStatus");
-        if (user) this.showNotification("Bienvenido", 3000, false);
-        else {
+        if (user) {
+          this.storage
+            .get("token")
+            .then(token => {
+              this.user["token"] = token;
+            })
+            .catch(_ => {});
+          this.showNotification("Bienvenido", 3000, false);
+        } else {
           this.unknowPostion = true;
         }
       })
@@ -188,11 +201,10 @@ export class DataServiceProvider {
     if (this.user && this.user.token != null) token = this.user.token;
     else {
       return new Promise(function(resolve, reject) {
-        setTimeout(function() {
-          return "{status:401, statusText:'Usted No esta Identificado'}";
-        });
+        return "{status:401, statusText:'Usted No esta Identificado'}";
       });
     }
+    console.log(token);
     let options = new HttpHeaders();
     options.set("Authorization", token);
     options.set("Content-Type", "application/json");
@@ -252,13 +264,13 @@ export class DataServiceProvider {
   }
 
   updateStatus(status = true) {
-    if (!status) this.status = "Ocupado";
-    else this.status = "Disponible";
+    if (!status) this.status = 4;
+    else this.status = 3;
     this.updatePostionStatus();
   }
 
   updatePostionStatus() {
-    if (this.user && this.postion && this.user.type == "Chofer") {
+    if (this.user && this.postion && this.user.type == "driver") {
       let objPostionStatus: any;
       objPostionStatus = {
         id: this.user.id,
@@ -266,13 +278,18 @@ export class DataServiceProvider {
         longitude: this.postion.coords.longitude,
         status: this.status
       };
-      console.log(objPostionStatus);
-      // this.postData("postion", objPostionStatus);
+      this.putData("driver/" + this.user.id, objPostionStatus)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 
   subscribePostion() {
-    if (this.unknowPostion && this.user && this.user.type == "Chofer") {
+    if (this.unknowPostion && this.user && this.user.type == "driver") {
       this.objPostionObservable = Observable.timer(3000, 60000);
       this.objPostionObservable.subscribe(_ => {
         this.geolocation

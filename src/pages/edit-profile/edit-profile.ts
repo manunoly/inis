@@ -9,7 +9,7 @@ import { DataServiceProvider } from "./../../providers/data-service/data-service
   templateUrl: "edit-profile.html"
 })
 export class EditProfilePage {
-  type = "Cliente";
+  type = "client";
   submitF = false;
   private client: FormGroup;
   private driver: FormGroup;
@@ -48,8 +48,8 @@ export class EditProfilePage {
     });
     let userD = this.dataS.getUser();
     if (userD) {
-      if (userD.type == "CLiente") this.setUserForm(userD);
-      else if (userD.type == "Chofer") {
+      if (userD.type == "client") this.setUserForm(userD);
+      else if (userD.type == "driver") {
         // let spinner = this.dataS.showSpinner();
         // spinner.present();
         this.dataS
@@ -64,7 +64,7 @@ export class EditProfilePage {
           });
       }
     } else {
-      this.setUserForm({ type: "Cliente" });
+      this.setUserForm({ type: "client" });
       this.navCtrl.push("HomePage");
     }
   }
@@ -74,7 +74,7 @@ export class EditProfilePage {
   setUserForm(user) {
     if (user) {
       this.type = user.type;
-      if (user.type == "Cliente") {
+      if (user.type == "client") {
         this.client = this.formBuilder.group({
           name: [user.name, Validators.required],
           phone: [user.phone, Validators.required],
@@ -92,7 +92,7 @@ export class EditProfilePage {
           capacity: ["", Validators.required],
           facilities: ["", Validators.required]
         });
-      } else if (user.type == "Chofer") {
+      } else if (user.type == "driver") {
         this.driver = this.formBuilder.group({
           driverName: [user.name, Validators.required],
           driverPhone: [user.phone, Validators.required],

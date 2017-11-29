@@ -34,6 +34,7 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
+  ionic-color:	#8B193D,
   primary:    #488aff,
   secondary:  #32db64,
   danger:     #f53d3d,
@@ -41,8 +42,8 @@ $colors: (
   dark:       #222
 );
 
-$text-color: #D0D3D4;
-$background-color:	#8B193D;
+// $text-color: #D0D3D4;
+// $background-color:	#8B193D;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here

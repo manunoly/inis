@@ -4,7 +4,7 @@
 
 <ion-content padding>
   <div [hidden]="submitF">
-    <div [hidden]="type != 'Cliente'">
+    <div [hidden]="type != 'client'">
       <form [formGroup]="client" (ngSubmit)="updateClient()">
         <ion-row>
           <ion-col offset-sm-3 col-sm-6>
@@ -37,7 +37,7 @@
         </ion-row>
       </form>
     </div>
-    <div [hidden]="type != 'Chofer'">
+    <div [hidden]="type != 'driver'">
       <form [formGroup]="driver" (ngSubmit)="updateDriver()">
         <ion-row>
           <ion-col offset-sm-3 col-sm-6>

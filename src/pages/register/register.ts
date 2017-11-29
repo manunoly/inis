@@ -21,16 +21,16 @@ export class RegisterPage {
     private formBuilder: FormBuilder,
     public plt: Platform
   ) {
-    let os = "web";
-    if (this.plt.is("ios")) os = "ios";
-    if (this.plt.is("android")) os = "android";
+    let os = "ANDROID";
+    if (this.plt.is("ios")) os = "IOS";
+    if (this.plt.is("android")) os = "ANDROID";
     this.client = this.formBuilder.group({
       name: ["", Validators.required],
       phone: ["", Validators.required],
       email_address: ["", Validators.required],
       password: ["", Validators.required],
       password1: ["", Validators.required],
-      type: ["Cliente"],
+      type: ["client"],
       os: [os]
     });
     this.driver = this.formBuilder.group({
@@ -43,7 +43,7 @@ export class RegisterPage {
       modelo: ["", Validators.required],
       capacity: ["", Validators.required],
       facilities: ["", Validators.required],
-      type: ["Chofer"],
+      type: ["driver"],
       os: [os]
     });
   }

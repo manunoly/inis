@@ -25,13 +25,13 @@
           <ion-icon name="log-out"></ion-icon>
         </button>
         <br>
-        <ion-list *ngIf="user.type == 'Cliente'">
+        <ion-list *ngIf="user.type == 'client'">
           <button ion-item menuClose *ngFor="let p of clientPages" (click)="openPage(p)">
             <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
             {{ p.title }}
           </button>
         </ion-list>
-        <ion-list *ngIf="user.type == 'Chofer'">
+        <ion-list *ngIf="user.type == 'driver'">
           <button ion-item menuClose *ngFor="let p of driverPages" (click)="openPage(p)">
             <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
             {{ p.title }}

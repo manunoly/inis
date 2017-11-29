@@ -110,7 +110,7 @@ export class MyApp {
 
   userStatus() {
     if (this.user) {
-      if (this.user.type == "Chofer") this.dataS.updateStatus();
+      if (this.user.type == "driver") this.dataS.updateStatus();
       else this.dataS.updateStatus(false);
     }
   }
