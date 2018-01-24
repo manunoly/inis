@@ -5,60 +5,63 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
+  <ion-navbar  color="inis-oscuro">
     <ion-title text-center>Detalles de la Solicitud de Servicio</ion-title>
   </ion-navbar>
 </ion-header>
 
-
 <ion-content padding>
-  <div offset-sm-2 col-sm-8>
-    <ion-list>
-      <ion-list-header no-lines>
-        Detalles de la Carrera Realizada
-      </ion-list-header>
-      <ion-item text-wrap>
-        <ion-row>
-          <ion-col col-6>
-            <h2>
-              <b>Origen: </b> {{race.origin}}
-            </h2>
-          </ion-col>
-          <ion-col col-6>
-            <h2>
-              <b>Destino: </b>{{race.destination}}
-            </h2>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col col-6>
-            <h2>
-              <b>Fecha: </b> {{race.startdate}} - {{race.starthour}}
-            </h2>
-          </ion-col>
-          <ion-col col-6>
-            <h3>
-              Precio Estimado: {{race.price}} usd
-            </h3>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col col-6>
-            <h3>
-              <b>Chofer: </b> {{race.driver}}</h3>
-            <div *ngIf="star.length > 0;else unrated">
-              Valoración:
-              <ion-icon name="star" *ngFor="let starnumber of star"></ion-icon>
-            </div>
-            <ng-template #unrated>
-              Sin Valoración
-            </ng-template>
-          </ion-col>
-        </ion-row>
-      </ion-item>
-    </ion-list>
-    <div text-center>
-      <button ion-button (click)="goBack()">Aceptar</button>
-    </div>
-  </div>
+  <ion-card offset-md-3 col-md-6>
+    <ion-card-content>
+      <div>
+        <ion-list>
+          <ion-list-header no-lines>
+            Detalles de la Carrera Realizada
+          </ion-list-header>
+          <ion-item text-wrap>
+            <ion-row>
+              <ion-col col-6>
+                <h2>
+                  <b>Origen: </b> {{race.origin}}
+                </h2>
+              </ion-col>
+              <ion-col col-6>
+                <h2>
+                  <b>Destino: </b>{{race.destination}}
+                </h2>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-6>
+                <h2>
+                  <b>Fecha: </b> {{race.startdate}} - {{race.starthour}}
+                </h2>
+              </ion-col>
+              <ion-col col-6>
+                <h3>
+                  Precio Estimado: {{race.price}} usd
+                </h3>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-6>
+                <h3>
+                  <b>Chofer: </b> {{race.driver}}</h3>
+                <div *ngIf="star.length > 0;else unrated">
+                  Valoración:
+                  <ion-icon name="star" *ngFor="let starnumber of star"></ion-icon>
+                </div>
+                <ng-template #unrated>
+                  Sin Valoración
+                </ng-template>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+        </ion-list>
+        <div text-center>
+          <button ion-button (click)="goBack()">Aceptar</button>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

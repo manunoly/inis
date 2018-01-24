@@ -3,18 +3,14 @@
 </ion-navbar>
 
 <ion-content text-center>
-  <ion-toolbar transparent>
-    <ion-title color="primary">Estado</ion-title>
-    <div offset-sm-4 col-sm-4>
-      <ion-list text-wrap>
-        <ion-item style="background-color: transparent">
-          <span item-start class="dot"></span>
+  <ion-card offset-md-3 col-md-6>
+    <ion-card-content>
+      <ion-list text-center offset-md-1>
+        <ion-item text-center padding>
           <ion-label>Disponible </ion-label>
           <ion-toggle [(ngModel)]="disponible" (ionChange)="disponibleM()" color="secondary"></ion-toggle>
         </ion-item>
       </ion-list>
-    </div>
-    <div offset-sm-2 col-sm-8>
       <ion-list>
         <ion-list-header no-lines text-center>
           Carrera Demandadas
@@ -50,6 +46,6 @@
           No existen carreras demandadas en este momento.
         </ion-item>
       </ion-list>
-    </div>
-  </ion-toolbar>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

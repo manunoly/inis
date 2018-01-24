@@ -5,41 +5,47 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="inis-oscuro">
     <ion-title text-center>Detalle de Carrera Realizada</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <div offset-sm-2 col-sm-8>
-    <ion-list>
-      <ion-list-header no-lines >
-        Detalles de la Carrera Realizada
-      </ion-list-header>
-      <ion-item text-wrap>
-        <ion-row>
-          <ion-col col-6>
-            <h2>
-              <b>Origen: </b> {{race.origin}}
-            </h2>
-          </ion-col>
-          <ion-col col-6>
-            <h2>
-              <b>Destino: </b>{{race.destination}}
-            </h2>
-          </ion-col>
-          <ion-col col-6>
-            <h2>
-              <b>Fecha: </b> {{race.startdate}} - {{race.starthour}}
-            </h2>
-            <h3>
-              <b>Cliente: </b> {{race.client}}</h3>
-            <h3>
-              Precio Estimado: {{race.price}} usd
-            </h3>
-          </ion-col>
-        </ion-row>
-      </ion-item>
-    </ion-list>
-    <div text-center><button ion-button (click)="goBack()">Aceptar</button></div>
-  </div>
+  <ion-card offset-md-3 col-md-6>
+    <ion-card-content>
+      <div>
+        <ion-list>
+          <ion-list-header no-lines>
+            Detalles de la Carrera Realizada
+          </ion-list-header>
+          <ion-item text-wrap>
+            <ion-row>
+              <ion-col col-6>
+                <h2>
+                  <b>Origen: </b> {{race.origin}}
+                </h2>
+              </ion-col>
+              <ion-col col-6>
+                <h2>
+                  <b>Destino: </b>{{race.destination}}
+                </h2>
+              </ion-col>
+              <ion-col col-6>
+                <h2>
+                  <b>Fecha: </b> {{race.startdate}} - {{race.starthour}}
+                </h2>
+                <h3>
+                  <b>Cliente: </b> {{race.client}}</h3>
+                <h3>
+                  Precio Estimado: {{race.price}} usd
+                </h3>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+        </ion-list>
+        <div text-center>
+          <button color="inis-oscuro" ion-button (click)="goBack()">Aceptar</button>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

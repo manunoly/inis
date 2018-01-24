@@ -11,3 +11,26 @@
   background-color: darkgray;
   white-space: pre;
 }
+
+ion-card {
+  border: 1px solid #8B193D;
+}
+a {
+ color: #8B193D
+}
+a:link {
+text-decoration: none;
+}
+
+a:visited {
+text-decoration: none;
+}
+
+a:hover {
+text-decoration: underline;
+cursor: pointer;
+}
+
+a:active {
+text-decoration: underline;
+}

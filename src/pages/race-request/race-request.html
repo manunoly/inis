@@ -4,13 +4,17 @@
 
 <ion-content no-padding>
   <div [hidden]="raceAsign" id="map"></div>
-  <ion-footer [hidden]="raceAsign" offset-2 col-8>
+  <ion-footer [hidden]="raceAsign" offset-1 col-10>
     <ion-toolbar text-center transparent>
-      <button color="dark" [disabled]="endRace" (click)="addMarker()" icon-left>
-        <ion-icon name="navigate"></ion-icon>
-        Fin</button>
-      <button color="dark" [disabled]="!endRace" (click)="raceRequest()" icon-left>
-        <ion-icon name="car"></ion-icon>Solicitar</button>
+      <ion-buttons>
+        <button ion-button color="inis-claro" solid [disabled]="endRace" (click)="addMarker()" icon-left>
+          <ion-icon name="navigate"></ion-icon>
+          Destino
+        </button>
+        <button  ion-button color="inis-claro" solid [disabled]="!endRace" (click)="raceRequest()" icon-left>
+          <ion-icon name="car"></ion-icon>Solicitar
+        </button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-footer>
   <div [hidden]="!raceAsign">

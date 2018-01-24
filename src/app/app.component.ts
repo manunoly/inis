@@ -5,6 +5,7 @@ import { SplashScreen } from "@ionic-native/splash-screen";
 
 import { Storage } from "@ionic/storage";
 import { DataServiceProvider } from "./../providers/data-service/data-service";
+import { elementEventFullName } from "@angular/core/src/view/util";
 export interface PageInterface {
   title: string;
   pageName: string;
@@ -26,7 +27,7 @@ export class MyApp {
   clientPages: PageInterface[] = [
     {
       title: "Inicio",
-      pageName: "HomePage",
+      pageName: "HomeUserPage",
       icon: "home",
       fav: false
     },
@@ -53,7 +54,7 @@ export class MyApp {
   driverPages: PageInterface[] = [
     {
       title: "Inicio",
-      pageName: "HomePage",
+      pageName: "HomeDriverPage",
       icon: "home",
       fav: false
     },
@@ -101,7 +102,12 @@ export class MyApp {
     this.events.subscribe("user:changeStatus", () => {
       this.dataS.getUserLocalStorage().then(userD => {
         this.user = userD;
-        this.nav.setRoot("HomePage");
+        if (this.user) {
+          if (this.user.type == "client") this.nav.setRoot("HomeUserPage");
+          else if (this.user.type == "driver")
+            this.nav.setRoot("HomeDriverPage");
+          else this.nav.setRoot("HomePage");
+        } else this.nav.setRoot("HomePage");
         this.userStatus();
       });
     });

@@ -28,7 +28,7 @@ export class DataServiceProvider {
   status: number;
   objPostionObservable: any;
   // public static readonly SERVER = "http://localhost/";
-  public static readonly SERVER = "http://localhost:8000/api/";
+  public static readonly SERVER = "http://localhost:4500/api/";
   // parameter: ReplaySubject<string> = new ReplaySubject<string>(1);
   races = [
     {
