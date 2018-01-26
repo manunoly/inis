@@ -39,7 +39,7 @@ export class LoginPage {
   }
   logForm() {
     console.log("inicio sesion");
-    this.dataS
+    /* this.dataS
       .postData("login", this.login.value)
       .then(res => {
         if (res["token"]) this.dataS.setUserLocalData(res["token"]);
@@ -51,20 +51,20 @@ export class LoginPage {
           this.msg = "";
         }, 15000);
         console.log(error);
-      }); /*
+      }); */
     let returData: any;
     if (this.login.value.email == "manuel@as") {
       returData = {
         token:
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiQW5keSIsInBob25lIjoiNzI3Mjc0ODkiLCJzdGF0dXMiOiIxIiwibGF0aXR1ZGUiOiIxMiIsImxvbmdpdHVkZSI6IjEzIiwiZW1haWxfYWRkcmVzcyI6ImFuZHlAZ21haWwuY29tIiwicm9sbCI6ImNsaWVudGUiLCJqdGkiOiJhOTU3MWIzNy1hOTY3LTRjYTMtODY3My1kYzUxNGE3NWFiNDMiLCJpYXQiOjE1MDk2NTg4ODgsImV4cCI6MTUwOTY2MjQ4OH0.iB0IJB6KYsod29evP0BtSOogYUrAoik-kcV4X5qKvBM"
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiQW5keSIsInBob25lIjoiNzI3Mjc0ODkiLCJzdGF0dXMiOiIxIiwibGF0aXR1ZGUiOiIxMiIsImxvbmdpdHVkZSI6IjEzIiwiZW1haWxfYWRkcmVzcyI6ImFuZHlAZ21haWwuY29tIiwidHlwZSI6ImNsaWVudGUiLCJqdGkiOiJhOTU3MWIzNy1hOTY3LTRjYTMtODY3My1kYzUxNGE3NWFiNDMiLCJpYXQiOjE1MDk2NTg4ODgsImV4cCI6MTUwOTY2MjQ4OH0.5EC0eyEbQZZd51jrQeK0uV7NxW2dnWkxRbXW2sscNaM"
       };
     } else {
       returData = {
         token:
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiQW5kcmVzIEluaWVzdGEiLCJwaG9uZSI6IjcyNzI3NDg5Iiwic3RhdHVzIjoiMSIsImxhdGl0dWRlIjoiMTIiLCJsb25naXR1ZGUiOiIxMyIsImVtYWlsX2FkZHJlc3MiOiJhbmR5QGdtYWlsLmNvbSIsInJvbGwiOiJjaG9mZXIiLCJqdGkiOiI1NmVlN2U5NC04MGE3LTQ3YWQtYmYxNC0xZTZiY2QxZmMyMjUiLCJpYXQiOjE1MDk2NjA1ODgsImV4cCI6MTUwOTY2NDE4OH0.FjXh2l8rpLRE8LUS8-lIml1h-9wT4OuKJcUN_WDsAvU"
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiQW5kcmVzIEluaWVzdGEiLCJwaG9uZSI6IjcyNzI3NDg5Iiwic3RhdHVzIjoiMSIsImxhdGl0dWRlIjoiMTIiLCJsb25naXR1ZGUiOiIxMyIsImVtYWlsX2FkZHJlc3MiOiJhbmR5QGdtYWlsLmNvbSIsInR5cGUiOiJjaG9mZXIiLCJqdGkiOiI1NmVlN2U5NC04MGE3LTQ3YWQtYmYxNC0xZTZiY2QxZmMyMjUiLCJpYXQiOjE1MDk2NjA1ODgsImV4cCI6MTUwOTY2NDE4OH0.TK_sFjGWEGrvtIBx5kpPRH5BX5q4f6WNV2RUW2guUck"
       };
     }
-    this.dataS.setUserLocalData(returData.token); */
+    this.dataS.setUserLocalData(returData.token);
   }
 
   ionViewDidLoad() {

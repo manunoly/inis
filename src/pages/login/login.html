@@ -2,48 +2,46 @@
   <ion-title>Iniciar Seción</ion-title>
 </ion-navbar>
 
-
 <ion-content padding>
-  <ion-card  offset-md-3 col-md-6>
-    <ion-card-header text-center color="inis-oscuro">
+  <div>
+    <div text-center padding color="inis-oscuro">
       <h1> Identifícate</h1>
-    </ion-card-header>
-    <ion-card-content>
-      <div [hidden]="submitF">
-        <form [formGroup]="login" (ngSubmit)="logForm()">
-          <ion-list>
-            <ion-item>
-              <ion-label color="inis-oscuro" stacked icon-start>
-                <!-- <ion-icon color="inis-oscuro" name="at"></ion-icon> -->
-                Correo Electrónico
-              </ion-label>
-              <ion-input color="inis-oscuro" placeholder="..." type="email" formControlName="email"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label color="inis-oscuro" stacked clearInput icon-left>
-                <ion-icon color="inis-oscuro" name="unlock"></ion-icon>Contraseña</ion-label>
-              <ion-input type="password" placeholder="..." formControlName="password"></ion-input>
-            </ion-item>
-            <ion-item>
-              <a item-end (click)="forgetPassword()"> Olvidé mi contraseña!</a>
-            </ion-item>
+    </div>
+    <div [hidden]="submitF">
+      <form [formGroup]="login" (ngSubmit)="logForm()">
+        <ion-list>
+          <ion-item>
+            <ion-label color="inis-oscuro" stacked>
+              <ion-icon name="at"></ion-icon>
+              Correo Electrónico
+            </ion-label>
+            <ion-input clearInput color="inis-oscuro" placeholder="Escriba su correo aqui" type="email" formControlName="email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>
+              <ion-icon name="unlock"></ion-icon>
+              Contraseña</ion-label>
+            <ion-input clearInput type="password" placeholder="..." formControlName="password"></ion-input>
+          </ion-item>
+          <ion-item no-lines>
+            <a item-end (click)="forgetPassword()"> Olvidé mi contraseña!</a>
+          </ion-item>
+          <br>
+          <div *ngIf="msg" text-center>
             <br>
-            <div *ngIf="msg" text-center>
-              <br>
-              <h2>
-                {{msg}}
-              </h2>
-            </div>
-            <div offset-sm-2 col-sm-8>
-              <button color="inis-opaco" round full text-center ion-button type="submit" [disabled]="!login.valid">Ingresar </button>
-            </div>
-            <br>
-            <ion-item text-center text-wrap>
-              <a (click)="newUser()">Nuevo Usuario? Registrate ahora</a>
-            </ion-item>
-          </ion-list>
-        </form>
-      </div>
-    </ion-card-content>
-  </ion-card>
+            <h2>
+              {{msg}}
+            </h2>
+          </div>
+          <div offset-sm-2 col-sm-8>
+            <button color="inis-opaco" round full text-center ion-button type="submit" [disabled]="!login.valid">Ingresar </button>
+          </div>
+          <br>
+          <ion-item text-center text-wrap>
+            <a (click)="newUser()">Nuevo Usuario? Registrate ahora</a>
+          </ion-item>
+        </ion-list>
+      </form>
+    </div>
+  </div>
 </ion-content>
