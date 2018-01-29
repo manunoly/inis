@@ -186,12 +186,12 @@ export class DataServiceProvider {
   postData(url = null, params: any) {
     let token = "";
     if (this.user && this.user.token != null) token = this.user.token;
-    let options = new HttpHeaders();
-    options.set("Authorization", token);
-    options.set("Content-Type", "application/json");
     return this.http
       .post(DataServiceProvider.SERVER + url, params, {
-        headers: options
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+          Authorization: token
+        })
       })
       .toPromise();
   }

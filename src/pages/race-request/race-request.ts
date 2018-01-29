@@ -30,6 +30,7 @@ export class RaceRequestPage {
   raceObj = {};
   raceAsigne: boolean = false;
   spinner: any;
+  conductor = ""
   // directionsDisplay = new google.maps.DirectionsRenderer();
   // bounds: any;
   constructor(
@@ -126,21 +127,20 @@ export class RaceRequestPage {
       (response, status) => {
         if (status == "OK") {
           this.raceObj["from"] = response.originAddresses[0];
-          this.raceObj["fromLat"] = this.startRace.getPosition().lat();
-          this.raceObj["fromLong"] = this.startRace.getPosition().lng();
+          this.raceObj["from_latitude"] = this.startRace.getPosition().lat();
+          this.raceObj["from_longitude"] = this.startRace.getPosition().lng();
           this.raceObj["to"] = response.destinationAddresses[0];
-          this.raceObj["toLat"] = this.endRace.getPosition().lat();
-          this.raceObj["toLong"] = this.endRace.getPosition().lng();
-          this.raceObj["distance"] = response.rows[0].elements[0].distance.text;
+          this.raceObj["to_latitude"] = this.endRace.getPosition().lat();
+          this.raceObj["to_longitude"] = this.endRace.getPosition().lng();
+          this.raceObj["distant"] = response.rows[0].elements[0].distance.text;
           this.raceObj["duration"] = response.rows[0].elements[0].duration.text;
           /**
-           * TODO: get Price between distance;
+           * TODO: get Price between distant;
            */
           let price = 0.5;
           this.raceObj["price"] =
-            Number(
-              this.raceObj["distance"].split(" ", 1)[0].replace(",", ".")
-            ) * price;
+            Number(this.raceObj["distant"].split(" ", 1)[0].replace(",", ".")) *
+            price;
           this.raceObj["passenger_id"] = this.dataS.getUser().id;
           this.raceObj["passenger_name"] = this.dataS.getUser().name;
           let msgConfirm =
@@ -152,7 +152,7 @@ export class RaceRequestPage {
             this.raceObj["price"] +
             "<br>" +
             " Distancia " +
-            this.raceObj["distance"] +
+            this.raceObj["distant"] +
             " => " +
             this.raceObj["duration"];
 
@@ -171,12 +171,34 @@ export class RaceRequestPage {
               {
                 text: "Solicitar",
                 handler: () => {
-                  /**
-                   * TODO: Post data to request reservation
-                   * TODO: GET Race ID
-                   */
-                  this.raceObj["id"] = 12;
-                  console.log(this.raceObj);
+                  this.dataS.getUserLocalToken().then(token => {
+                    let userId = this.dataS.parseJwt(token);
+                    this.raceObj["client_id"] = userId.id;
+                    this.raceObj["name"] = userId.name;
+                    this.raceObj["name"] = userId.name;
+                    this.raceObj["type"] = "fast";
+                    this.raceObj["default"] = 1;
+                    this.dataS
+                      .postData("travel", this.raceObj)
+                      .then(response => {
+                        /**
+                         * TODO: Post data to request reservation
+                         * TODO: GET Race ID
+                         */
+                        console.log("OK");
+                        this.raceAsigne = true;
+                        setTimeout(() => {
+                          this.conductor = "Manuel conductor";
+                        }, 1500);
+
+                      })
+                      .catch(error=>{
+                        console.log("error");
+                        console.log(error);
+                      }
+
+                      );
+                  });
                 }
               }
             ]

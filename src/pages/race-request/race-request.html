@@ -1,23 +1,39 @@
 <ion-navbar>
   <ion-title>Solicitar Carrera</ion-title>
 </ion-navbar>
+<ion-header [hidden]="!raceAsigne">
+  <ion-navbar color="inis-oscuro">
+    <ion-title text-center>Espere</ion-title>
+  </ion-navbar>
+</ion-header>
 
 <ion-content no-padding>
-  <div [hidden]="raceAsign" id="map"></div>
-  <ion-footer [hidden]="raceAsign" offset-1 col-10>
+  <div [hidden]="raceAsigne" id="map"></div>
+  <ion-footer [hidden]="raceAsigne" offset-1 col-10>
     <ion-toolbar text-center transparent>
       <ion-buttons>
         <button ion-button color="inis-claro" solid [disabled]="endRace" (click)="addMarker()" icon-left>
           <ion-icon name="navigate"></ion-icon>
           Destino
         </button>
-        <button  ion-button color="inis-claro" solid [disabled]="!endRace" (click)="raceRequest()" icon-left>
+        <button ion-button color="inis-claro" solid [disabled]="!endRace" (click)="raceRequest()" icon-left>
           <ion-icon name="car"></ion-icon>Solicitar
         </button>
       </ion-buttons>
     </ion-toolbar>
   </ion-footer>
-  <div [hidden]="!raceAsign">
-    Carrera Asignada
+  <div [hidden]="!raceAsigne" text-center padding>
+    <br>
+    <br>
+    <h2>
+      Esperando Asignación de Carrera!
+    </h2>
+    <div *ngIf="conductor; else sinAsignar">
+      {{conductor}}
+    </div>
+    <ng-template #sinAsignar>
+      <ion-spinner></ion-spinner>
+      <p> Sin Asignar</p>
+    </ng-template>
   </div>
 </ion-content>

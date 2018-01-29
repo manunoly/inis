@@ -36,21 +36,19 @@ export class ResetPasswordPage {
   }
 
   resetPassword() {
-    let postData = this.dataS.postData("prueba.php", this.resetPasswordF.value);
+    let postData = this.dataS.postData("reset", this.resetPasswordF.value);
     postData
-    .then(data => {
-      console.log(data);/*
-      if(data.status == 200){
+      .then(data => {
+        if (data) {
+          this.submitF = true;
+          this.msg = data.msg;
+        } else this.submitF = true;
+        this.msg = data.msg;
+      })
+      .catch(error => {
         this.submitF = true;
-      this.msg = data.text();
-      }else
-      this.submitF = true;
-      this.msg = data.text(); */
-    })
-    .catch(error => {
-      this.submitF = true;
-      console.log(error);
-      this.msg = "Ha ocurrido un error inesperado";
-    });
+        console.log(error);
+        this.msg = "Ha ocurrido un error inesperado";
+      });
   }
 }
