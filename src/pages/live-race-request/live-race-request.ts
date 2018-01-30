@@ -1,3 +1,4 @@
+import { HomeUserPage } from "./../home-user/home-user";
 import { ConfirmRaceRequestPage } from "./../confirm-race-request/confirm-race-request";
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
@@ -17,14 +18,16 @@ import { DataServiceProvider } from "./../../providers/data-service/data-service
 })
 export class LiveRaceRequestPage {
   disponible = true;
-  spinner: any;
-  public races: any;
+  races: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private dataS: DataServiceProvider
-  ) {
-    this.findLiveRace();
+  ) {}
+  ionViewDidLoad() {
+    if (!this.dataS.getUser()) this.navCtrl.push("HomePage");
+    else this.findLiveRace();
   }
 
   disponibleM() {
@@ -32,18 +35,18 @@ export class LiveRaceRequestPage {
   }
 
   findLiveRace() {
-    this.spinner = this.dataS.showSpinner();
-    setTimeout(() => {
-      this.dataS
-        .getData("live-race")
-        .then(tmpRace => {
-          this.races = tmpRace;
-          this.spinner.dismiss();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },0);
+    let spinner = this.dataS.showSpinner();
+    spinner.present();
+    this.dataS
+      .getData("live-race")
+      .then(tmpRace => {
+        this.races = tmpRace;
+        spinner.dismiss();
+      })
+      .catch(error => {
+        console.log(error.msg);
+        spinner.dismiss();
+      });
   }
 
   goToRaceDetail(race: any) {
@@ -52,19 +55,21 @@ export class LiveRaceRequestPage {
     });
   }
 
-  assignRace(id_race) {
+  assignRace(id_race, client_id) {
     let spinner = this.dataS.showSpinner(15000, "Asignando Carrera");
-    console.log({ id: id_race, driver_id: this.dataS.getUser().id });
-    if (spinner) spinner.dismiss();
-    /*     this.dataS
-      .postData("assign", { id: id_race, driver_id: this.dataS.getUser().id })
+    this.dataS
+      .putData("driver-accept-reservations/" + id_race, {
+        id: id_race,
+        driver_id: this.dataS.getUser().id,
+        client_id: client_id
+      })
       .then(res => {
-        this.races = res;
         console.log(res);
-        this.spinner.dismiss();
+        spinner.dismiss();
       })
       .catch(error => {
         console.log(error);
-      }); */
+        spinner.dismiss();
+      });
   }
 }
