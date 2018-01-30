@@ -24,8 +24,8 @@ export class ConfirmRaceRequestPage {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       streetViewControl: false
     };
-    let fromRace = new google.maps.LatLng(race.fromLat, race.fromLong);
-    let toRace = new google.maps.LatLng(race.toLat, race.toLong);
+    let fromRace = new google.maps.LatLng(race.from_latitude, race.from_longitude);
+    let toRace = new google.maps.LatLng(race.to_latitude, race.to_longitude);
     let map = new google.maps.Map(document.getElementById("map"), mapOptions);
     this.addMarker(map, "Fin", toRace);
     this.addMarker(map, "Inicio", fromRace);

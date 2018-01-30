@@ -41,9 +41,9 @@ export class ResetPasswordPage {
       .then(data => {
         if (data) {
           this.submitF = true;
-          this.msg = data.msg;
+          this.msg = data['msg'];
         } else this.submitF = true;
-        this.msg = data.msg;
+        this.msg = data['msg'];
       })
       .catch(error => {
         this.submitF = true;

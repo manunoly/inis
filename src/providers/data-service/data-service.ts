@@ -172,13 +172,12 @@ export class DataServiceProvider {
         });
       });
     }
-    console.log("get request");
-    let options = new HttpHeaders();
-    options.set("Authorization", token);
-    options.set("Content-Type", "application/json");
     return this.http
       .get(DataServiceProvider.SERVER + url, {
-        headers: options
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+          Authorization: token
+        })
       })
       .toPromise();
   }
@@ -204,13 +203,12 @@ export class DataServiceProvider {
         return "{status:401, statusText:'Usted No esta Identificado'}";
       });
     }
-    console.log(token);
-    let options = new HttpHeaders();
-    options.set("Authorization", token);
-    options.set("Content-Type", "application/json");
     return this.http
       .put(DataServiceProvider.SERVER + url, params, {
-        headers: options
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+          Authorization: token
+        })
       })
       .toPromise();
   }
@@ -280,6 +278,7 @@ export class DataServiceProvider {
       };
       this.putData("driver/" + this.user.id, objPostionStatus)
         .then(res => {
+          console.log("updatepos");
           console.log(res);
         })
         .catch(error => {

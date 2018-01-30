@@ -33,13 +33,13 @@
             </ion-label>
             <ion-input type="email" formControlName="email_address"></ion-input>
           </ion-item>
-          <ion-item>
+          <!-- <ion-item hidden=true>
             <ion-label stacked>
               <ion-icon name="unlock"></ion-icon>
               Contraseña
             </ion-label>
             <ion-input type="password" formControlName="password"></ion-input>
-          </ion-item>
+          </ion-item> -->
           <br>
           <div offset-sm-2 col-sm-8>
             <button color="inis-opaco" round full text-center ion-button type="submit" [disabled]="!client.valid">Actualizar </button>
@@ -77,13 +77,13 @@
             </ion-label>
             <ion-input type="email" formControlName="email_address"></ion-input>
           </ion-item>
-          <ion-item>
+<!--           <ion-item hidden=true>
             <ion-label stacked>
               <ion-icon name="unlock"></ion-icon>
               Contraseña
             </ion-label>
             <ion-input type="password" formControlName="password"></ion-input>
-          </ion-item>
+          </ion-item> -->
           <ion-item>
             <ion-label stacked>
               <ion-icon name="car"></ion-icon>
@@ -91,16 +91,16 @@
             </ion-label>
             <ion-input type="text" formControlName="marca"></ion-input>
           </ion-item>
-          <div col-6>
+          <div>
             <ion-item>
               <ion-label stacked>
                 <ion-icon name="time"></ion-icon>
                 Modelo
               </ion-label>
-              <ion-input type="number" formControlName="modelo"></ion-input>
+              <ion-input type="text" formControlName="modelo"></ion-input>
             </ion-item>
           </div>
-          <div col-6>
+          <div>
             <ion-item>
               <ion-label stacked>
                 <ion-icon name="time"></ion-icon>
@@ -125,7 +125,7 @@
       </form>
     </div>
   </div>
-  <div [hidden]="!submitF">
+  <div [hidden]="!submitF" text-center>
     <br>
     <h2>
       {{msg}}
