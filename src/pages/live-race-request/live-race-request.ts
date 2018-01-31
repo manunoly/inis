@@ -17,7 +17,7 @@ import { DataServiceProvider } from "./../../providers/data-service/data-service
   templateUrl: "live-race-request.html"
 })
 export class LiveRaceRequestPage {
-  disponible = true;
+  disponible: boolean;
   races: any;
 
   constructor(
@@ -27,7 +27,19 @@ export class LiveRaceRequestPage {
   ) {}
   ionViewDidLoad() {
     if (!this.dataS.getUser()) this.navCtrl.push("HomePage");
-    else this.findLiveRace();
+    else {
+      this.findLiveRace();
+      this.dataS.getStatusFromDatabase()
+      .then(res => {
+        let numberStatus = this.dataS.getStatus();
+        this.disponible = numberStatus == 4 ? false : true;
+      })
+      .catch(error => {
+        this.disponible = true;
+        console.log("error tomando status de la BD")
+      });
+
+    }
   }
 
   disponibleM() {

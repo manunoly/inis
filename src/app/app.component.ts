@@ -93,7 +93,7 @@ export class MyApp {
       this.checkUser();
       this.dataS.getUserLocalStorage().then(userD => {
         this.user = userD;
-        this.userStatus();
+        // this.userStatus();
       });
     });
   }
@@ -108,7 +108,7 @@ export class MyApp {
             this.nav.setRoot("HomeDriverPage");
           else this.nav.setRoot("HomePage");
         } else this.nav.setRoot("HomePage");
-        this.userStatus();
+        // this.userStatus();
       });
     });
     // this.events.publish("user:changeStatus");
@@ -117,9 +117,10 @@ export class MyApp {
   userStatus() {
     if (this.user) {
       if (this.user.type == "driver") this.dataS.updateStatus();
-      else this.dataS.updateStatus(false);
+      else this.dataS.getStatusFromDatabase;
     }
   }
+
   loginUser() {
     console.log("LoginPage");
   }

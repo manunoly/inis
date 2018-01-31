@@ -18,6 +18,7 @@ import { Observable } from "rxjs/Observable";
 // import 'rxjs/add/observable/fromPromise';
 import { Storage } from "@ionic/storage";
 import { Geolocation } from "@ionic-native/geolocation";
+import { elementDef } from "@angular/core/src/view/element";
 
 @Injectable()
 export class DataServiceProvider {
@@ -29,54 +30,7 @@ export class DataServiceProvider {
   objPostionObservable: any;
   // public static readonly SERVER = "http://localhost/";
   public static readonly SERVER = "http://localhost:4500/api/";
-  // parameter: ReplaySubject<string> = new ReplaySubject<string>(1);
-  races = [
-    {
-      id_race: 1,
-      startdate: "2017-09-21",
-      enddate: "2017-09-21",
-      starthour: "9:21",
-      endhour: "10:50",
-      client: "Mariano Vallejo",
-      id_client: 12,
-      driver: "Andres Iniesta",
-      id_driver: 90,
-      origin: "Plaza foch",
-      destination: "Gaspar Villaroel pasando la gasolinera de la 6",
-      price: 4.15,
-      star: 5
-    },
-    {
-      id_race: 3,
-      startdate: "2017-09-21",
-      enddate: "2017-09-21",
-      starthour: "9:25",
-      endhour: "10:50",
-      client: "Mariano Vallejo",
-      id_client: 12,
-      driver: "Ricardo Pablo",
-      id_driver: 91,
-      origin: "Plaza foch",
-      destination: "gasolinera de la 6",
-      price: 4.05,
-      star: 4
-    },
-    {
-      id_race: 2,
-      startdate: "2017-09-22",
-      enddate: "2017-09-22",
-      starthour: "9:21",
-      endhour: "9:50",
-      client: "Marvel Regan",
-      id_client: 12,
-      driver: "Andres Iniesta",
-      id_driver: 90,
-      origin: "Plaza foch",
-      destination: "Gaspar Villaroel",
-      price: 2.55,
-      star: 5
-    }
-  ];
+
   constructor(
     private http: HttpClient,
     public storage: Storage,
@@ -214,7 +168,6 @@ export class DataServiceProvider {
   }
 
   getRace() {
-    return this.races;
   }
 
   getSingleRaceByID(id) {
@@ -233,49 +186,50 @@ export class DataServiceProvider {
       price: 2.55,
       star: 5
     };
-    this.races.forEach(race => {
-      if (race.id_race == id) {
-        return tmpRace;
-      }
-    });
     return tmpRace;
   }
 
   getRaceByClient(id: number) {
     let tmpRace = [];
-    this.races.forEach(race => {
-      if (race.id_client == id) {
-        tmpRace.push(race);
-      }
-    });
     return tmpRace;
   }
 
   getRaceByDriver(id: number) {
     let tmpRace = [];
-    this.races.forEach(race => {
-      if (race.id_driver == id) {
-        tmpRace.push(race);
-      }
-    });
     return tmpRace;
+  }
+
+  getStatus() {
+    return this.status;
+  }
+
+  getStatusFromDatabase() {
+    return this.getData("driver/" + this.user.id)
+      .then(res => {
+        this.status = res["status"];
+      })
+      .catch(error => {
+        this.status = 3;
+        console.log("error tomando status de la BD");
+      });
   }
 
   updateStatus(status = true) {
     if (!status) this.status = 4;
     else this.status = 3;
-    this.updatePostionStatus();
+    this.updatePostionStatus(true);
   }
 
-  updatePostionStatus() {
+  updatePostionStatus(status = false) {
     if (this.user && this.postion && this.user.type == "driver") {
-      let objPostionStatus: any;
-      objPostionStatus = {
+      let objPostionStatus = {
         id: this.user.id,
         latitude: this.postion.coords.latitude,
-        longitude: this.postion.coords.longitude,
-        status: this.status
+        longitude: this.postion.coords.longitude
       };
+      if (status) {
+        objPostionStatus["status"] = this.status;
+      }
       this.putData("driver/" + this.user.id, objPostionStatus)
         .then(res => {
           console.log("updatepos");

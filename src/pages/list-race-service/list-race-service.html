@@ -20,17 +20,17 @@
             <ion-row>
               <ion-col col-6>
                 <h2>
-                  <b>Origen: </b> {{race.origin}}
+                  <b>Origen: </b> {{race.from}}
                 </h2>
               </ion-col>
               <ion-col col-6>
                 <h2>
-                  <b>Destino: </b>{{race.destination}}
+                  <b>Destino: </b>{{race.to}}
                 </h2>
               </ion-col>
-              <ion-col col-6>
+              <ion-col>
                 <h2>
-                  <b>Fecha: </b> {{race.startdate}} - {{race.starthour}}
+                  <b>Fecha: </b> {{race.date}}
                 </h2>
                 <h3>
                   Precio Estimado: {{race.price}} usd
@@ -45,7 +45,7 @@
               </ion-col>
             </ion-row>
             <div float-end>
-              <button ion-button clear (click)="raceDetail(race.id_race)">Ver Detalles</button>
+              <button ion-button clear (click)="raceDetail(race)">Ver Detalles</button>
             </div>
           </ion-item>
         </ion-list>

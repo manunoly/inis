@@ -21,21 +21,33 @@ export class ListRaceServicePage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private dataService: DataServiceProvider
-  ) {
-    this.races = this.dataService.getRaceByClient(12);
-    this.rateCalculate();
+    private dataS: DataServiceProvider
+  ) {}
+
+  ionViewDidLoad() {
+    if (!this.dataS.getUser()) this.navCtrl.push("HomePage");
+    else this.getRaces();
   }
 
-  ionViewDidLoad() {}
-
-  raceDetail(id) {
-    let raceTmp = this.dataService.getSingleRaceByID(id);
-    if (raceTmp) {
-      this.navCtrl.push(ClientRaceDetailPage, {
-        race: raceTmp
+  getRaces() {
+    let spinner = this.dataS.showSpinner();
+    spinner.present();
+    this.dataS
+      .getData("client-reservations/" + this.dataS.getUser().id)
+      .then(res => {
+        this.races = res;
+        spinner.dismiss();
+      })
+      .catch(error => {
+        console.log(error.msg);
+        spinner.dismiss();
       });
-    }
+  }
+
+  raceDetail(race) {
+    this.navCtrl.push(ClientRaceDetailPage, {
+      race: race
+    });
   }
 
   rateCalculate(numberStar = 0) {
