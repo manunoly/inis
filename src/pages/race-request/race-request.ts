@@ -30,7 +30,7 @@ export class RaceRequestPage {
   raceObj = {};
   raceAsigne: boolean = false;
   spinner: any;
-  conductor = ""
+  conductor = "";
   // directionsDisplay = new google.maps.DirectionsRenderer();
   // bounds: any;
   constructor(
@@ -171,34 +171,28 @@ export class RaceRequestPage {
               {
                 text: "Solicitar",
                 handler: () => {
-                  this.dataS.getUserLocalToken().then(token => {
-                    let userId = this.dataS.parseJwt(token);
-                    this.raceObj["client_id"] = userId.id;
-                    this.raceObj["name"] = userId.name;
-                    this.raceObj["name"] = userId.name;
-                    this.raceObj["type"] = "fast";
-                    this.raceObj["default"] = 1;
-                    this.dataS
-                      .postData("travel", this.raceObj)
-                      .then(response => {
-                        /**
-                         * TODO: Post data to request reservation
-                         * TODO: GET Race ID
-                         */
-                        console.log("OK");
-                        this.raceAsigne = true;
-                        setTimeout(() => {
-                          this.conductor = "Manuel conductor";
-                        }, 1500);
-
-                      })
-                      .catch(error=>{
-                        console.log("error");
-                        console.log(error);
-                      }
-
-                      );
-                  });
+                  let userId = this.dataS.getUser();
+                  this.raceObj["client_id"] = userId.id;
+                  this.raceObj["name"] = userId.name;
+                  this.raceObj["name"] = userId.name;
+                  this.raceObj["type"] = "fast";
+                  this.raceObj["default"] = 1;
+                  this.raceObj["type"] = "fast";
+                  this.raceObj["passenger"] = "fast";
+                  // console.log(this.raceObj);
+                  this.dataS
+                    .postData("user-make-reservation", this.raceObj)
+                    .then(response => {
+                      console.log(response);
+                      this.raceAsigne = true;
+                      setTimeout(() => {
+                        this.conductor = "Manuel conductor";
+                      }, 1500);
+                    })
+                    .catch(error => {
+                      console.log("error");
+                      console.log(error);
+                    });
                 }
               }
             ]
