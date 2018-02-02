@@ -67,7 +67,7 @@ export class LiveRaceRequestPage {
     });
   }
 
-  assignRace(id_race, client_id) {
+  assignRace(id_race, client_id){
     let spinner = this.dataS.showSpinner(15000, "Asignando Carrera");
     this.dataS
       .putData("driver-accept-reservations/" + id_race, {

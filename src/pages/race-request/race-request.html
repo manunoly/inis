@@ -1,39 +1,43 @@
 <ion-navbar>
   <ion-title>Solicitar Carrera</ion-title>
 </ion-navbar>
-<ion-header [hidden]="!raceAsigne">
+<ion-header [hidden]="!raceRequest">
   <ion-navbar color="inis-oscuro">
     <ion-title text-center>Espere</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content no-padding>
-  <div [hidden]="raceAsigne" id="map"></div>
-  <ion-footer [hidden]="raceAsigne" offset-1 col-10>
+  <div [hidden]="raceRequest" id="map"></div>
+  <ion-footer [hidden]="raceRequest" offset-1 col-10>
     <ion-toolbar text-center transparent>
       <ion-buttons>
         <button ion-button color="inis-claro" solid [disabled]="endRace" (click)="addMarker()" icon-left>
           <ion-icon name="navigate"></ion-icon>
           Destino
         </button>
-        <button ion-button color="inis-claro" solid [disabled]="!endRace" (click)="raceRequest()" icon-left>
+        <button ion-button color="inis-claro" solid [disabled]="!endRace" (click)="raceRequestM()" icon-left>
           <ion-icon name="car"></ion-icon>Solicitar
         </button>
       </ion-buttons>
     </ion-toolbar>
   </ion-footer>
-  <div [hidden]="!raceAsigne" text-center padding>
+  <div [hidden]="!raceRequest" text-center padding>
     <br>
     <br>
-    <h2>
-      Esperando Asignación de Carrera!
-    </h2>
-    <div *ngIf="conductor; else sinAsignar">
-      {{conductor}}
+    <br>
+    <div *ngIf="driver; else sinAsignar">
+      <h3>Conductora: {{driver.name}}</h3>
+      <h3>Telefóno: {{driver.phone}}</h3>
+      <h4>Placa: {{driver.chapa}}</h4>
+      <h4>Marca: {{driver.marca}}</h4>
+      <h4>Capacidad: {{driver.capacity}}</h4>
     </div>
     <ng-template #sinAsignar>
       <ion-spinner></ion-spinner>
-      <p> Sin Asignar</p>
+      <h2>
+        Esperando Asignación de Conductora!
+      </h2>
     </ng-template>
   </div>
 </ion-content>

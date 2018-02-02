@@ -28,6 +28,7 @@ export class DataServiceProvider {
   postion: any;
   status: number;
   objPostionObservable: any;
+  raceRequest: boolean = false;
   // public static readonly SERVER = "http://localhost/";
   public static readonly SERVER = "http://localhost:4500/api/";
 
@@ -167,8 +168,7 @@ export class DataServiceProvider {
       .toPromise();
   }
 
-  getRace() {
-  }
+  getRace() {}
 
   getSingleRaceByID(id) {
     let tmpRace = {
@@ -241,6 +241,15 @@ export class DataServiceProvider {
     }
   }
 
+  getRaceRequest() {
+    return this.raceRequest;
+  }
+
+  setRaceRequest(raceRequest = false) {
+    this.raceRequest = raceRequest;
+  }
+
+  subsscribeClientReservation() {}
   subscribePostion() {
     if (this.unknowPostion && this.user && this.user.type == "driver") {
       this.objPostionObservable = Observable.timer(3000, 60000);

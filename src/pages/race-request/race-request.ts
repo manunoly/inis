@@ -7,6 +7,10 @@ import {
 } from "ionic-angular";
 import { Geolocation } from "@ionic-native/geolocation";
 import { DataServiceProvider } from "./../../providers/data-service/data-service";
+
+import "rxjs/add/operator/catch";
+import "rxjs/add/observable/timer";
+import { Observable } from "rxjs/Observable";
 /* import {
   GoogleMaps,
   GoogleMap,
@@ -28,9 +32,10 @@ export class RaceRequestPage {
   startRace: any;
   endRace: any;
   raceObj = {};
-  raceAsigne: boolean = false;
+  raceRequest: boolean = false;
   spinner: any;
-  conductor = "";
+  driver: any;
+  raceClientObservable: any;
   // directionsDisplay = new google.maps.DirectionsRenderer();
   // bounds: any;
   constructor(
@@ -47,6 +52,7 @@ export class RaceRequestPage {
       this.spinner = this.dataS.showSpinner();
       this.spinner.present();
       this.createMap();
+      this.raceRequest = this.dataS.getRaceRequest();
     } else this.navCtrl.push("HomePage");
   }
 
@@ -115,7 +121,7 @@ export class RaceRequestPage {
       infoWindow.open(this.map, marker);
     });
   }
-  raceRequest() {
+  raceRequestM() {
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
       {
@@ -184,13 +190,43 @@ export class RaceRequestPage {
                     .postData("user-make-reservation", this.raceObj)
                     .then(response => {
                       console.log(response);
-                      this.raceAsigne = true;
-                      setTimeout(() => {
-                        this.conductor = "Manuel conductor";
-                      }, 1500);
+                      this.raceRequest = true;
+                      this.dataS.setRaceRequest(true);
+                      this.raceClientObservable = Observable.timer(3000, 16000);
+                      this.raceClientObservable.subscribe(_ => {
+                        console.log("suscrito al observer");
+                        this.dataS
+                          .getData("reservation/" + response)
+                          .then(res => {
+                            console.log(res);
+                            if (
+                              "driver_id" in res &&
+                              res["driver_id"] !== null
+                            ) {
+                              this.dataS
+                                .getData("driver/" + res["driver_id"])
+                                .then(driver => {
+                                  console.log(driver);
+                                  this.driver = driver;
+                                })
+                                .catch(error => {
+                                  this.dataS.showNotification(error);
+                                });
+                            }
+                            console.log(res);
+                          })
+                          .catch(error => {
+                            this.dataS.showNotification(
+                              "Ha ocurrido un error inesperado."
+                            );
+                            console.log(error);
+                          });
+                      });
                     })
                     .catch(error => {
-                      console.log("error");
+                      this.dataS.showNotification(
+                        "Ha ocurrido un error inesperado."
+                      );
                       console.log(error);
                     });
                 }
