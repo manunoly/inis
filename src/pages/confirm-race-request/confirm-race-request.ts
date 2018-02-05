@@ -18,7 +18,6 @@ export class ConfirmRaceRequestPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {
-    console.log(this.navParams.data.race);
     let race = this.navParams.data.race;
     let mapOptions = {
       mapTypeId: google.maps.MapTypeId.ROADMAP,

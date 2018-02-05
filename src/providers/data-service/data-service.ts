@@ -29,8 +29,19 @@ export class DataServiceProvider {
   status: number;
   objPostionObservable: any;
   raceRequest: boolean = false;
+  liveDriver: any;
+  liveRace: any;
+  liveClient: any;
   // public static readonly SERVER = "http://localhost/";
   public static readonly SERVER = "http://localhost:4500/api/";
+  public static readonly STATUS_PENDING = 1;
+  public static readonly STATUS_ACEPTED = 2;
+  public static readonly STATUS_REJECTED = 3;
+  public static readonly STATUS_CANCELED = 4;
+  public static readonly STATUS_STARTED = 5;
+  public static readonly STATUS_FINISHED = 6;
+  public static readonly TRAVEL_FAST = "fast";
+  public static readonly RESERV = "reserv";
 
   constructor(
     private http: HttpClient,
@@ -203,18 +214,11 @@ export class DataServiceProvider {
     return this.status;
   }
 
-  getStatusFromDatabase() {
-    return this.getData("driver/" + this.user.id)
-      .then(res => {
-        this.status = res["status"];
-      })
-      .catch(error => {
-        this.status = 3;
-        console.log("error tomando status de la BD");
-      });
+  getStatusFromDatabase(): Promise<any> {
+    return this.getData("driver/" + this.user.id);
   }
 
-  updateStatus(status = true) {
+  setStatus(status = true) {
     if (!status) this.status = 4;
     else this.status = 3;
     this.updatePostionStatus(true);
@@ -245,11 +249,60 @@ export class DataServiceProvider {
     return this.raceRequest;
   }
 
+  getDriverAsigne() {
+    return this.liveDriver;
+  }
+
+  setDriverAsigne(driver) {
+    this.liveDriver = driver;
+  }
+
+  getLiveRace() {
+    return this.liveRace;
+  }
+
+  setLiveRace(race) {
+    this.liveRace = race;
+  }
+
+  getLiveClient() {
+    return this.liveClient;
+  }
+
+  setLiveClient(client) {
+    this.liveClient = client;
+  }
+
+  getTextStatus(status) {
+    switch (parseInt(status)) {
+      case DataServiceProvider.STATUS_ACEPTED: {
+        return "Aceptada";
+      }
+      case DataServiceProvider.STATUS_CANCELED: {
+        return "Cancelada";
+      }
+      case DataServiceProvider.STATUS_FINISHED: {
+        return "Terminada";
+      }
+      case DataServiceProvider.STATUS_REJECTED: {
+        return "Rechazada";
+      }
+      case DataServiceProvider.STATUS_STARTED: {
+        return "Iniciada";
+      }
+      case DataServiceProvider.STATUS_PENDING: {
+        return "Pendiente";
+      }
+      default: {
+        return "Desconocido";
+      }
+    }
+  }
+
   setRaceRequest(raceRequest = false) {
     this.raceRequest = raceRequest;
   }
 
-  subsscribeClientReservation() {}
   subscribePostion() {
     if (this.unknowPostion && this.user && this.user.type == "driver") {
       this.objPostionObservable = Observable.timer(3000, 60000);

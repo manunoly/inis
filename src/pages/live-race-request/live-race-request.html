@@ -5,43 +5,88 @@
 </ion-header>
 
 <ion-content text-center>
-  <ion-list>
-    <ion-item text-center>
-      <ion-label>Disponible </ion-label>
-      <ion-toggle [(ngModel)]="disponible" (ionChange)="disponibleM()" color="secondary"></ion-toggle>
-    </ion-item>
-    <ion-list-header>
-      Carrera Demandadas
-      <button float-end ion-button color="inis-claro" small (click)="findLiveRace()">Buscar</button>
-    </ion-list-header>
-    <ion-item *ngFor="let race of races" text-wrap>
-      <ion-row>
-        <ion-col col-6>
-          <h2>
-            <b>Origen: </b> {{race.from}}
-          </h2>
-        </ion-col>
-        <ion-col col-6>
-          <h2>
-            <b>Destino: </b>{{race.to}}
-          </h2>
-        </ion-col>
-        <ion-col>
-          <h2>
-            <b>Distancia Aproximada: </b> {{race.distant}} Km
-          </h2>
-          <h3>
-            Precio Estimado: {{race.price}} usd
-          </h3>
-        </ion-col>
-      </ion-row>
+  <div *ngIf="!liveRace">
+    <ion-list>
+      <ion-item text-center>
+        <ion-label>Disponible </ion-label>
+        <ion-toggle [(ngModel)]="disponible" (ionChange)="disponibleM()" color="secondary"></ion-toggle>
+      </ion-item>
+      <ion-list-header>
+        Carreras Demandadas
+        <button float-end ion-button color="inis-claro" small (click)="findLiveRace()">Buscar</button>
+      </ion-list-header>
+      <ion-item *ngFor="let race of races" text-wrap>
+        <ion-row>
+          <ion-col col-6>
+            <h2>
+              <b>Origen: </b> {{race.from}}
+            </h2>
+          </ion-col>
+          <ion-col col-6>
+            <h2>
+              <b>Destino: </b>{{race.to}}
+            </h2>
+          </ion-col>
+          <ion-col>
+            <h2>
+              <b>Distancia Aproximada: </b> {{race.distant}} Km
+            </h2>
+            <h3>
+              Precio Estimado: {{race.price}} usd
+            </h3>
+            <h3>
+                Estado: <span class="{{colorClass(race.status)}}"> {{getRaceStatus(race.status)}}</span>
+            </h3>
+          </ion-col>
+        </ion-row>
+        <div float-end>
+          <button ion-button clear color="inis-claro" (click)="goToRaceDetail(race)">Ver Detalles</button>
+          <button *ngIf="race.status == 1" ion-button clear color="inis-claro" (click)="assignRace(race.id, race.client_id)">Asigname</button>
+        </div>
+      </ion-item>
+      <ion-item *ngIf="!races" text-wrap text-center>
+        No existen carreras demandadas en este momento.
+      </ion-item>
+    </ion-list>
+  </div>
+  <div *ngIf="liveRace">
+    <ion-list text-wrap>
+      <ion-list-header>
+        Carrera Asignada
+      </ion-list-header>
+      <ion-item>
+        <b>Origen: </b> {{liveRace.from}}
+      </ion-item>
+      <ion-item>
+        <b>Destino: </b>{{liveRace.to}}
+      </ion-item>
+      <ion-item>
+        <h3>
+          Distancia Aproximada: {{liveRace.distant}} Km
+        </h3>
+        <h3>
+          Precio Estimado: {{liveRace.price}} usd
+        </h3>
+        <h3>
+          Fecha: {{liveRace.date}} usd
+        </h3>
+<!--         <h3>
+          TODO: Fix mostrar estado
+          Estado: <span class="{{colorClass(liveClient.status)}}"> {{getRaceStatus(liveClient.status)}}</span>
+        </h3> -->
+      </ion-item>
+      <ion-item>
+        <b>Cliente:</b> {{liveClient.name}}
+      </ion-item>
+      <ion-item>
+        Telefóno: {{liveClient.phone}}
+      </ion-item>
       <div float-end>
-        <button ion-button clear color="inis-claro" (click)="goToRaceDetail(race)">Ver Detalles</button>
-        <button ion-button clear color="inis-claro" (click)="assignRace(race.id)">Asigname</button>
+        <button *ngIf="liveRace.status == 2" ion-button clear color="inis-claro" (click)="startRace(liveRace)">Iniciar</button>
+        <button *ngIf="liveRace.status == 2" ion-button clear color="inis-claro" (click)="cancelRace(liveRace)">Cancelar</button>
+        <button *ngIf="liveRace.status == 5"  ion-button clear color="inis-claro" (click)="finishRace(liveRace)">Terminar</button>
+        <button ion-button clear color="inis-claro" (click)="goToRaceDetail(liveRace)">Ver Detalles</button>
       </div>
-    </ion-item>
-     <ion-item *ngIf="!races" text-wrap text-center>
-          No existen carreras demandadas en este momento.
-        </ion-item>
-  </ion-list>
+    </ion-list>
+  </div>
 </ion-content>

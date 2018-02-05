@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
-import { DriverRaceDetailPage } from "./../driver-race-detail/driver-race-detail";
+import { ConfirmRaceRequestPage } from "./../confirm-race-request/confirm-race-request";
 import { DataServiceProvider } from "./../../providers/data-service/data-service";
 
 @IonicPage()
@@ -40,8 +40,15 @@ export class ListRacePage {
       });
   }
   raceDetail(race) {
-    this.navCtrl.push(DriverRaceDetailPage, {
+    this.navCtrl.push(ConfirmRaceRequestPage, {
       race: race
     });
+  }
+  getRaceStatus(status) {
+    return this.dataS.getTextStatus(status);
+  }
+
+  colorClass(status) {
+    return "style" + status;
   }
 }

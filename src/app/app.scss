@@ -34,3 +34,31 @@ cursor: pointer;
 a:active {
 text-decoration: underline;
 }
+
+$item-ios-divider-color: #bd054d;
+$item-md-divider-color: #bd054d;
+$item-wp-divider-color: #bd054d;
+
+.style1{
+  color: #bd054d;
+}
+
+.style2{
+  color: rgb(82, 82, 236);
+}
+
+.style3{
+  color: rgb(230, 92, 82);
+}
+
+.style4{
+  color: red;
+}
+
+.style5{
+  color: rgb(0, 250, 12);
+}
+
+.style6{
+  color: goldenrod;
+}

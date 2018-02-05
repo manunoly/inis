@@ -30,6 +30,10 @@
             <h3>
               Precio Estimado: {{race.price}} usd
             </h3>
+            <h3>
+              Estado:
+              <span class="{{colorClass(race.status)}}"> {{getRaceStatus(race.status)}}</span>
+            </h3>
           </ion-col>
         </ion-row>
         <div float-end>

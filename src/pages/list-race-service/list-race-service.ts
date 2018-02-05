@@ -1,7 +1,9 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
-import { ClientRaceDetailPage } from "./../client-race-detail/client-race-detail";
+import { ConfirmRaceRequestPage } from "./../confirm-race-request/confirm-race-request";
 import { DataServiceProvider } from "./../../providers/data-service/data-service";
+import { RaceRatePage } from "./../race-rate/race-rate";
+
 /**
  * Generated class for the ListRaceServicePage page.
  *
@@ -17,6 +19,7 @@ import { DataServiceProvider } from "./../../providers/data-service/data-service
 export class ListRaceServicePage {
   races: any;
   stars: any;
+  user: any;
 
   constructor(
     public navCtrl: NavController,
@@ -26,14 +29,17 @@ export class ListRaceServicePage {
 
   ionViewDidLoad() {
     if (!this.dataS.getUser()) this.navCtrl.push("HomePage");
-    else this.getRaces();
+    else {
+      this.getRaces();
+      this.user = this.dataS.getUser();
+    }
   }
 
   getRaces() {
     let spinner = this.dataS.showSpinner();
     spinner.present();
     this.dataS
-      .getData("client-reservations/" + this.dataS.getUser().id)
+      .getData("user-reservations/" + this.dataS.getUser().id)
       .then(res => {
         this.races = res;
         spinner.dismiss();
@@ -45,24 +51,37 @@ export class ListRaceServicePage {
   }
 
   raceDetail(race) {
-    this.navCtrl.push(ClientRaceDetailPage, {
+    this.navCtrl.push(ConfirmRaceRequestPage, {
+      race: race
+    });
+  }
+
+  raceRate(race) {
+    this.navCtrl.push(RaceRatePage, {
       race: race
     });
   }
 
   rateCalculate(numberStar = 0) {
-    setTimeout(() => {
-      this.stars = [];
-      let i = 0;
-      while (i < 5) {
-        if (numberStar > i) this.stars.push("star");
-        else this.stars.push("star-outline");
-        i = i + 1;
-      }
-    }, 0);
+    let stars = [];
+    let i = 0;
+    while (i < 5) {
+      if (numberStar > i) stars.push("star");
+      else stars.push("star-outline");
+      i = i + 1;
+    }
+    return stars;
   }
 
   starClicked(i) {
     this.rateCalculate(i);
+  }
+
+  colorClass(status) {
+    return "style" + status;
+  }
+
+  getRaceStatus(raceStatus) {
+    return this.dataS.getTextStatus(raceStatus);
   }
 }

@@ -40,7 +40,7 @@ export class MyApp {
     {
       title: "Mis Solicitudes",
       pageName: "ListRaceServicePage",
-      icon: "calendar",
+      icon: "archive",
       fav: false
     },
     {
@@ -116,7 +116,7 @@ export class MyApp {
 
   userStatus() {
     if (this.user) {
-      if (this.user.type == "driver") this.dataS.updateStatus();
+      if (this.user.type == "driver") this.dataS.setStatus();
       else this.dataS.getStatusFromDatabase;
     }
   }

@@ -11,6 +11,7 @@ import { DriverRaceDetailPage } from "./../pages/driver-race-detail/driver-race-
 import { ClientRaceDetailPage } from "./../pages/client-race-detail/client-race-detail";
 import { DataServiceProvider } from "../providers/data-service/data-service";
 import { ConfirmRaceRequestPage } from "./../pages/confirm-race-request/confirm-race-request";
+import { RaceRatePage } from "./../pages/race-rate/race-rate";
 
 //geolocalizacion
 import { Geolocation } from "@ionic-native/geolocation";
@@ -23,7 +24,8 @@ import { IonicStorageModule } from "@ionic/storage";
     MyApp,
     DriverRaceDetailPage,
     ClientRaceDetailPage,
-    ConfirmRaceRequestPage
+    ConfirmRaceRequestPage,
+    RaceRatePage
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,8 @@ import { IonicStorageModule } from "@ionic/storage";
     MyApp,
     DriverRaceDetailPage,
     ClientRaceDetailPage,
-    ConfirmRaceRequestPage
+    ConfirmRaceRequestPage,
+    RaceRatePage
   ],
   providers: [
     StatusBar,

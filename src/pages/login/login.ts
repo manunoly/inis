@@ -38,20 +38,25 @@ export class LoginPage {
     });
   }
   logForm() {
-    console.log("inicio sesion");
-
+    try {
      this.dataS
-      .postData("login", this.login.value)
-      .then(res => {
-        if (res["token"]) this.dataS.setUserLocalData(res["token"]);
-      })
-      .catch(error => {
-        if (error.statusText) this.msg = JSON.parse(error.error).message;
-        setTimeout(() => {
-          this.msg = "";
-        }, 15000);
-        console.log(error);
-      });
+     .postData("login", this.login.value)
+     .then(res => {
+       if (res["token"]) this.dataS.setUserLocalData(res["token"]);
+     })
+     .catch(error => {
+       if (error.statusText) this.msg = JSON.parse(error.error).message;
+       setTimeout(() => {
+         this.msg = "";
+       }, 15000);
+       console.log(error);
+     });
+    } catch (error) {
+      this.msg = "Error Inesperado";
+      setTimeout(() => {
+        this.msg = "";
+      }, 15000);
+    }
    /*  let returData: any;
     if (this.login.value.email == "manuel@as") {
       returData = {

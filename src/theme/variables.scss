@@ -17,6 +17,10 @@ $label-md-text-color-focused: #bd054d;
 // http://ionicframework.com/docs/theming/rtl-support/
 $app-direction: ltr;
 
+$item-ios-body-text-font-size: 2rem;
+$item-md-body-text-font-size: 1.7rem;
+$item-wp-body-text-font-size: 1.7rem;
+
 @import "ionic.globals";
 
 // Shared Variables
@@ -46,7 +50,7 @@ $colors: (
 );
 
 // $text-color: #D0D3D4;
-// $background-color:	#8B193D;
+ $background-color: #FFF7F8;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here

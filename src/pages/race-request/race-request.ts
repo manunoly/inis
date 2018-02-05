@@ -7,10 +7,15 @@ import {
 } from "ionic-angular";
 import { Geolocation } from "@ionic-native/geolocation";
 import { DataServiceProvider } from "./../../providers/data-service/data-service";
-
 import "rxjs/add/operator/catch";
 import "rxjs/add/observable/timer";
+import "rxjs/add/observable/of";
+import "rxjs/add/operator/takeUntil";
 import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
+import { ConfirmRaceRequestPage } from "./../confirm-race-request/confirm-race-request";
+import { ListRaceServicePage } from '../list-race-service/list-race-service';
+
 /* import {
   GoogleMaps,
   GoogleMap,
@@ -35,7 +40,7 @@ export class RaceRequestPage {
   raceRequest: boolean = false;
   spinner: any;
   driver: any;
-  raceClientObservable: any;
+  destroy$: Subject<boolean> = new Subject<boolean>();
   // directionsDisplay = new google.maps.DirectionsRenderer();
   // bounds: any;
   constructor(
@@ -44,7 +49,7 @@ export class RaceRequestPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public geolocation: Geolocation /* ,
-    public googleMaps: GoogleMaps */
+    public googleMaps: GoogleMaps */ // private ngZone: ngZone
   ) {}
 
   ionViewDidLoad() {
@@ -53,6 +58,9 @@ export class RaceRequestPage {
       this.spinner.present();
       this.createMap();
       this.raceRequest = this.dataS.getRaceRequest();
+      if (this.raceRequest) {
+        this.driver = this.dataS.getDriverAsigne();
+      }
     } else this.navCtrl.push("HomePage");
   }
 
@@ -177,10 +185,11 @@ export class RaceRequestPage {
               {
                 text: "Solicitar",
                 handler: () => {
-                  let userId = this.dataS.getUser();
-                  this.raceObj["client_id"] = userId.id;
-                  this.raceObj["name"] = userId.name;
-                  this.raceObj["name"] = userId.name;
+                  let spinner = this.dataS.showSpinner();
+                  spinner.present();
+                  let user = this.dataS.getUser();
+                  this.raceObj["client_id"] = user.id;
+                  this.raceObj["name"] = user.name;
                   this.raceObj["type"] = "fast";
                   this.raceObj["default"] = 1;
                   this.raceObj["type"] = "fast";
@@ -188,40 +197,78 @@ export class RaceRequestPage {
                   // console.log(this.raceObj);
                   this.dataS
                     .postData("user-make-reservation", this.raceObj)
-                    .then(response => {
-                      console.log(response);
+                    .then(reserv => {
+                      if (reserv !== null) {
+                        console.log(reserv);
+                      }
                       this.raceRequest = true;
                       this.dataS.setRaceRequest(true);
-                      this.raceClientObservable = Observable.timer(3000, 16000);
-                      this.raceClientObservable.subscribe(_ => {
-                        console.log("suscrito al observer");
-                        this.dataS
-                          .getData("reservation/" + response)
-                          .then(res => {
-                            console.log(res);
-                            if (
-                              "driver_id" in res &&
-                              res["driver_id"] !== null
-                            ) {
-                              this.dataS
-                                .getData("driver/" + res["driver_id"])
-                                .then(driver => {
-                                  console.log(driver);
-                                  this.driver = driver;
-                                })
-                                .catch(error => {
-                                  this.dataS.showNotification(error);
-                                });
-                            }
-                            console.log(res);
-                          })
-                          .catch(error => {
-                            this.dataS.showNotification(
-                              "Ha ocurrido un error inesperado."
-                            );
-                            console.log(error);
-                          });
-                      });
+                      spinner.dismiss();
+                      Observable.timer(10000, 20000)
+                        .takeUntil(this.destroy$)
+                        .subscribe(_ => {
+                          console.log("suscrito al observer");
+                          this.dataS
+                            .getData("reservation/" + reserv)
+                            .then(res => {
+                              console.log(res);
+                              if (
+                                "driver_id" in res &&
+                                res["driver_id"] !== null
+                              ) {
+                                // FIXME: no hacer nuevas peticiones si ya tengo el driver
+                                console.log("busco el driver");
+                                this.dataS
+                                  .getData("driver/" + res["driver_id"])
+                                  .then(driverResp => {
+                                    if (
+                                      parseInt(res["status"]) ==
+                                        DataServiceProvider.STATUS_FINISHED ||
+                                      parseInt(res["status"]) ==
+                                        DataServiceProvider.STATUS_CANCELED ||
+                                      parseInt(res["status"]) ==
+                                        DataServiceProvider.STATUS_REJECTED
+                                    ) {
+                                      this.destroy$.next(true);
+                                      this.destroy$.unsubscribe();
+                                      this.driver = null;
+                                      this.dataS.setDriverAsigne(this.driver);
+                                      this.dataS.setLiveRace(null);
+                                      this.raceRequest = false;
+                                      this.dataS.setRaceRequest(false);
+                                      this.dataS.showNotification(
+                                        "Su Carrera ha sido " +
+                                          this.dataS.getTextStatus(
+                                            res["status"]
+                                          )
+                                      );
+
+                                    }
+                                    if (this.driver === undefined) {
+                                      this.driver = driverResp;
+                                      this.dataS.setDriverAsigne(this.driver);
+                                      this.dataS.setLiveRace(res);
+                                      this.dataS.showNotification(
+                                        driverResp["name"] +
+                                          " ha sido asignada!"
+                                      );
+                                    }
+                                  })
+                                  .catch(error => {
+                                    this.dataS.showNotification(
+                                      "Ha ocurrido un error inesperado."
+                                    );
+                                    console.log(error);
+                                  });
+                              }
+                            })
+                            .catch(error => {
+                              this.dataS.showNotification(
+                                "Ha ocurrido un error inesperado en la reservación."
+                              );
+                              console.log(error);
+                            });
+                        });
                     })
                     .catch(error => {
                       this.dataS.showNotification(
@@ -247,6 +294,12 @@ export class RaceRequestPage {
     // this.dataS.postData("reserver", {});
   }
 
+  raceDetail() {
+    this.navCtrl.push(ConfirmRaceRequestPage, {
+      race: this.dataS.getLiveRace()
+    });
+  }
+
   getStreetAddres(marker) {
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({ location: marker.getPosition() }, (results, status) => {
@@ -256,20 +309,4 @@ export class RaceRequestPage {
     });
     return;
   }
-  /* calculateAndDisplayRoute() {
-    this.directionsService.route(
-      {
-        origin: this.start,
-        destination: this.end,
-        travelMode: "DRIVING"
-      },
-      (response, status) => {
-        if (status === "OK") {
-          this.directionsDisplay.setDirections(response);
-        } else {
-          window.alert("Directions request failed due to " + status);
-        }
-      }
-    );
-  } */
 }

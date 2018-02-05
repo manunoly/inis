@@ -27,11 +27,26 @@
     <br>
     <br>
     <div *ngIf="driver; else sinAsignar">
-      <h3>Conductora: {{driver.name}}</h3>
-      <h3>Telefóno: {{driver.phone}}</h3>
-      <h4>Placa: {{driver.chapa}}</h4>
-      <h4>Marca: {{driver.marca}}</h4>
-      <h4>Capacidad: {{driver.capacity}}</h4>
+      <ion-list no-lines>
+        <ion-item>
+          <h3>Conductora: {{driver.name}}</h3>
+        </ion-item>
+        <ion-item>
+          <h3>Telefóno: {{driver.phone}}</h3>
+        </ion-item>
+        <ion-item>
+          <h4>Placa: {{driver.chapa}}</h4>
+        </ion-item>
+        <ion-item>
+          <h4>Marca: {{driver.marca}}</h4>
+        </ion-item>
+        <ion-item>
+          <h4>Capacidad: {{driver.capacity}}</h4>
+        </ion-item>
+        <div float-end>
+          <button ion-button small color="inis-claro" (click)="raceDetail()">Detalles</button>
+        </div>
+      </ion-list>
     </div>
     <ng-template #sinAsignar>
       <ion-spinner></ion-spinner>

@@ -1,6 +1,8 @@
-<ion-navbar>
-  <ion-title>Datos Personales</ion-title>
-</ion-navbar>
+<ion-header>
+  <ion-navbar color="inis-oscuro">
+    <ion-title text-center>Datos Personales</ion-title>
+  </ion-navbar>
+</ion-header>
 
 <ion-content padding>
   <div [hidden]="submitF">
@@ -26,7 +28,7 @@
             </ion-label>
             <ion-input type="number" formControlName="phone"></ion-input>
           </ion-item>
-          <ion-item  color="light">
+          <ion-item color="light">
             <ion-label stacked>
               <ion-icon name="at"></ion-icon>
               Correo
@@ -77,7 +79,7 @@
             </ion-label>
             <ion-input readonly type="email" formControlName="email_address"></ion-input>
           </ion-item>
-<!--           <ion-item hidden=true>
+          <!--           <ion-item hidden=true>
             <ion-label stacked>
               <ion-icon name="unlock"></ion-icon>
               Contraseña
