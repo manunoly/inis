@@ -14,7 +14,6 @@ import "rxjs/add/operator/takeUntil";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 import { ConfirmRaceRequestPage } from "./../confirm-race-request/confirm-race-request";
-import { ListRaceServicePage } from '../list-race-service/list-race-service';
 
 /* import {
   GoogleMaps,
@@ -85,7 +84,7 @@ export class RaceRequestPage {
         );
         // this.bounds = new google.maps.LatLngBounds();
 
-        let car = '<ion-icon name="car"></ion-icon>';
+        // let car = '<ion-icon name="car"></ion-icon>';
         this.startRace = new google.maps.Marker({
           position: latLng,
           draggable: true,

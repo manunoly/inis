@@ -7,7 +7,7 @@ import {
 } from "ionic-angular";
 import { Geolocation } from "@ionic-native/geolocation";
 import { DataServiceProvider } from "./../../providers/data-service/data-service";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+// import { HttpClient } from "@angular/common/http";
 
 @IonicPage({})
 @Component({
@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 })
 export class HomePage {
   constructor(
-    private http: HttpClient,
+    // private http: HttpClient,
     public geolocation: Geolocation,
     private dataS: DataServiceProvider
   ) {}

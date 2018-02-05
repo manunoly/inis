@@ -1,4 +1,4 @@
-import { HomeUserPage } from "./../home-user/home-user";
+// import { HomeUserPage } from "./../home-user/home-user";
 import { ConfirmRaceRequestPage } from "./../confirm-race-request/confirm-race-request";
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
@@ -110,6 +110,8 @@ export class LiveRaceRequestPage {
               client_id: client_id
             };
             let spinner = this.dataS.showSpinner(15000, "Asignando Carrera");
+            spinner.present();
+            // TODO: Test accion if race is already asigne
             this.dataS
               .putData("driver-accept-reservations/" + id_race, data)
               .then(res => {
@@ -122,7 +124,8 @@ export class LiveRaceRequestPage {
                     this.dataS.setLiveClient(client);
                     this.liveRace = res;
                     this.liveClient = client;
-                    this.dataS.showNotification("Carrera Aceptada");
+                    spinner.dismiss();
+                    this.dataS.showNotification("Carrera Asignada");
                   })
                   .catch(error => {
                     console.log(error);

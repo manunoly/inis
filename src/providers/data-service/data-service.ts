@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import {
-  Platform,
   ToastController,
   Events,
   LoadingController
@@ -18,7 +17,7 @@ import { Observable } from "rxjs/Observable";
 // import 'rxjs/add/observable/fromPromise';
 import { Storage } from "@ionic/storage";
 import { Geolocation } from "@ionic-native/geolocation";
-import { elementDef } from "@angular/core/src/view/element";
+// import { elementDef } from "@angular/core/src/view/element";
 
 @Injectable()
 export class DataServiceProvider {
@@ -33,7 +32,7 @@ export class DataServiceProvider {
   liveRace: any;
   liveClient: any;
   // public static readonly SERVER = "http://localhost/";
-  public static readonly SERVER = "http://localhost:4500/api/";
+  public static readonly SERVER = "http://172.16.10.162:4500/api/";
   public static readonly STATUS_PENDING = 1;
   public static readonly STATUS_ACEPTED = 2;
   public static readonly STATUS_REJECTED = 3;

@@ -1,8 +1,8 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { Component } from "@angular/core";
+import { NavController, NavParams } from "ionic-angular";
 import { DataServiceProvider } from "./../../providers/data-service/data-service";
 
-@IonicPage()
+// @IonicPage()
 @Component({
   selector: "page-race-rate",
   templateUrl: "race-rate.html"

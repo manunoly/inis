@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { NavController, NavParams } from "ionic-angular";
 
 /**
  * Generated class for the ConfirmRaceRequestPage page.
@@ -9,7 +9,7 @@ import { IonicPage, NavController, NavParams } from "ionic-angular";
  */
 declare var google;
 
-@IonicPage()
+// @IonicPage()
 @Component({
   selector: "page-confirm-race-request",
   templateUrl: "confirm-race-request.html"
@@ -35,7 +35,7 @@ export class ConfirmRaceRequestPage {
   }
 
   addMarker(map, label, pos) {
-    let race = new google.maps.Marker({
+    new google.maps.Marker({
       draggable: false,
       position: pos,
       map: map,

@@ -48,6 +48,17 @@ export class ListRacePage {
     return this.dataS.getTextStatus(status);
   }
 
+  rateCalculate(numberStar = 0) {
+    let stars = [];
+    let i = 0;
+    while (i < 5) {
+      if (numberStar > i) stars.push("star");
+      else stars.push("star-outline");
+      i = i + 1;
+    }
+    return stars;
+  }
+
   colorClass(status) {
     return "style" + status;
   }
