@@ -30,7 +30,7 @@ export class LiveRaceRequestPage {
     private alertCtrl: AlertController
   ) {}
   ionViewDidLoad() {
-    if (!this.dataS.getUser()) this.navCtrl.push("HomePage");
+    if (!this.dataS.getUser()) this.navCtrl.push("HomeDriverPage");
     else {
       if (
         this.dataS.getLiveRace() !== undefined &&

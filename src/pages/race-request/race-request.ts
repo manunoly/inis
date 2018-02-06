@@ -14,6 +14,7 @@ import "rxjs/add/operator/takeUntil";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 import { ConfirmRaceRequestPage } from "./../confirm-race-request/confirm-race-request";
+import { RaceRatePage } from "../race-rate/race-rate";
 
 /* import {
   GoogleMaps,
@@ -60,7 +61,7 @@ export class RaceRequestPage {
       if (this.raceRequest) {
         this.driver = this.dataS.getDriverAsigne();
       }
-    } else this.navCtrl.push("HomePage");
+    } else this.navCtrl.push("HomeUserPage");
   }
 
   createMap() {
@@ -241,7 +242,11 @@ export class RaceRequestPage {
                                             res["status"]
                                           )
                                       );
-
+                                      setTimeout(() => {
+                                        this.navCtrl.push(RaceRatePage, {
+                                          race: res
+                                        });
+                                      }, 2000);
                                     }
                                     if (this.driver === undefined) {
                                       this.driver = driverResp;

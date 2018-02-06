@@ -19,7 +19,7 @@ export class ListRacePage {
   ) {}
 
   ionViewDidLoad() {
-    if (!this.dataS.getUser()) this.navCtrl.push("HomePage");
+    if (!this.dataS.getUser()) this.navCtrl.push("HomeDriverPage");
     else {
       this.getRaces();
       this.user = this.dataS.getUser();
@@ -46,6 +46,29 @@ export class ListRacePage {
   }
   getRaceStatus(status) {
     return this.dataS.getTextStatus(status);
+  }
+
+  getStatusAcepted() {
+    return DataServiceProvider.STATUS_ACEPTED;
+  }
+  getStatusStart() {
+    return DataServiceProvider.STATUS_STARTED;
+  }
+
+  doIt(race) {
+    this.dataS
+      .getData("user/" + race.client_id)
+      .then(client => {
+        this.dataS.liveClient = client;
+        this.dataS.liveRace = race;
+        this.navCtrl.push('LiveRaceRequestPage', {
+          race: race
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        this.dataS.showNotification("Ha ocurrido un error");
+      });
   }
 
   rateCalculate(numberStar = 0) {

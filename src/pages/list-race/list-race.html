@@ -44,7 +44,8 @@
           </ion-col>
         </ion-row>
         <div float-end>
-          <button ion-button small color="inis-claro" (click)="raceDetail(race)">Detalles</button>
+          <button *ngIf="race.status == getStatusAcepted() || race.status == getStatusStart()" ion-button color="inis-claro" clear (click)="doIt(race)">Realizar</button>
+          <button ion-button clear small color="inis-claro" (click)="raceDetail(race)">Ver Detalles</button>
         </div>
       </ion-item>
     </ion-list>

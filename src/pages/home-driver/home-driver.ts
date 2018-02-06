@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Geolocation } from "@ionic-native/geolocation";
+import { DataServiceProvider } from "./../../providers/data-service/data-service";
 
 @IonicPage()
 @Component({
@@ -8,11 +10,26 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class HomeDriverPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public geolocation: Geolocation,
+    private dataS: DataServiceProvider) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HomeDriverPage');
+    this.geolocation
+      .getCurrentPosition()
+      .then(postion => {
+        this.dataS.subscribePostion();
+      })
+      .catch(error => {
+        this.dataS.showNotification(
+          "Por favor active su Geolocalización y verifique su conexión." +
+            "\n" +
+            error.message,
+          5000,
+          false
+        );
+      });
   }
 
   goTo(page){

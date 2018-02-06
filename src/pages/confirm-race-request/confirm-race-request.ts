@@ -19,11 +19,15 @@ export class ConfirmRaceRequestPage {
 
   ionViewDidLoad() {
     let race = this.navParams.data.race;
+    console.log(race);
     let mapOptions = {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       streetViewControl: false
     };
-    let fromRace = new google.maps.LatLng(race.from_latitude, race.from_longitude);
+    let fromRace = new google.maps.LatLng(
+      race.from_latitude,
+      race.from_longitude
+    );
     let toRace = new google.maps.LatLng(race.to_latitude, race.to_longitude);
     let map = new google.maps.Map(document.getElementById("map"), mapOptions);
     this.addMarker(map, "Fin", toRace);

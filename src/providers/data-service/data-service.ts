@@ -31,8 +31,8 @@ export class DataServiceProvider {
   liveDriver: any;
   liveRace: any;
   liveClient: any;
-  // public static readonly SERVER = "http://localhost/";
-  public static readonly SERVER = "http://172.16.10.162:4500/api/";
+  public static readonly SERVER = "http://localhost:4500/api/";
+  // public static readonly SERVER = "http://172.16.10.162:4500/api/";
   public static readonly STATUS_PENDING = 1;
   public static readonly STATUS_ACEPTED = 2;
   public static readonly STATUS_REJECTED = 3;
@@ -304,6 +304,7 @@ export class DataServiceProvider {
 
   subscribePostion() {
     if (this.unknowPostion && this.user && this.user.type == "driver") {
+      console.log("Is a driver subscribe the position");
       this.objPostionObservable = Observable.timer(3000, 60000);
       this.objPostionObservable.subscribe(_ => {
         this.geolocation
@@ -318,6 +319,11 @@ export class DataServiceProvider {
           });
       });
     }
+  }
+
+  subscribePostionEnd(){
+    this.objPostionObservable.unsubscribe();
+    this.unknowPostion = true;
   }
 
   showNotification(message, time = 5000, pageChance = true) {

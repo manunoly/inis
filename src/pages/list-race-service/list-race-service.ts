@@ -28,7 +28,7 @@ export class ListRaceServicePage {
   ) {}
 
   ionViewDidLoad() {
-    if (!this.dataS.getUser()) this.navCtrl.push("HomePage");
+    if (!this.dataS.getUser()) this.navCtrl.push("HomeUserPage");
     else {
       this.getRaces();
       this.user = this.dataS.getUser();

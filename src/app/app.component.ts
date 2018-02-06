@@ -68,7 +68,7 @@ export class MyApp {
     {
       title: "Mis Carreras",
       pageName: "ListRacePage",
-      icon: "calendar",
+      icon: "archive",
       fav: false
     },
     {
@@ -104,8 +104,10 @@ export class MyApp {
         this.user = userD;
         if (this.user) {
           if (this.user.type == "client") this.nav.setRoot("HomeUserPage");
-          else if (this.user.type == "driver")
+          else if (this.user.type == "driver"){
             this.nav.setRoot("HomeDriverPage");
+            this.dataS.subscribePostion();
+          }
           else this.nav.setRoot("HomePage");
         } else this.nav.setRoot("HomePage");
         // this.userStatus();
