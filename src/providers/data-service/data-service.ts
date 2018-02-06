@@ -31,7 +31,7 @@ export class DataServiceProvider {
   liveDriver: any;
   liveRace: any;
   liveClient: any;
-  public static readonly SERVER = "http://localhost:4500/api/";
+  public static readonly SERVER = "http://159.89.228.158/index.php/api/";
   // public static readonly SERVER = "http://172.16.10.162:4500/api/";
   public static readonly STATUS_PENDING = 1;
   public static readonly STATUS_ACEPTED = 2;
